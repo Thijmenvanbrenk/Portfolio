@@ -15,7 +15,7 @@ library(readxl)
 # inspecting the data
 ```{r inspecting the data}
 
-offspring <- read_excel(here("bestanden/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
+offspring <- read_excel(here("assignment_1/data/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
 
 # we want to see if the data for the experimental conditions have been imported correctly
 offspring %>% select(c("expType", "RawData", "compName", "compConcentration"))
@@ -25,14 +25,15 @@ offspring %>% select(c("expType", "RawData", "compName", "compConcentration"))
 offspring$RawData <- as.integer(offspring$RawData)
 offspring$compName <- as.factor(offspring$compName)
 offspring$expType <- as.factor(offspring$expType)
-offspring$compConcentration <- as.numeric(offspring$compConcentration)
+
+offspring_tidy <- offspring
+offspring_tidy$compConcentration <- as.numeric(offspring_tidy$compConcentration)
 
 # one of the values in compconcentration is accidentally classified as a character in excel and has now turned into a NA value, we will change this value manually.
 
-which(is.na(offspring$compConcentration))
-
-# by checking this row in the original dataset we see that the value was supposed to be
-offspring$compConcentration[259] <- 0.000195
+character_placement <- which(is.na(offspring_tidy$compConcentration))
+character_value <- offspring$compConcentration[character_placement] %>% str_replace(",", ".") %>% parse_number()
+offspring_tidy$compConcentration[character_placement] <- character_value
 
 # lets check one last time if the data types are correct.
 offspring %>% select(c("RawData", "compName", "compConcentration"))
@@ -43,8 +44,11 @@ offspring %>% select(c("RawData", "compName", "compConcentration"))
 # graphical visualization of the data
 ```{r graphical visualization of the data}
 
-offspring %>%
+offspring_tidy %>%
   ggplot(aes(x = log10(compConcentration + 0.0001), y = RawData)) +
   geom_jitter(aes(shape = expType, colour = compName), width = .1)
 
 ```
+
+the positive control of this experiment is Ethanol and the negative control is no added substance.
+
