@@ -3,7 +3,7 @@ title: "Amount of offspring for C. elegans incubated in different substances"
 author: "Thijmen van Brenk"
 date: "`r Sys.Date()`"
 output: bookdown::html_document2
-bibliography: "`r rbbt::bbt_write_bib('bibliography.json', overwrite = TRUE)`"
+bibliography: "`r rbbt::bbt_write_bib('bibliography1.json', overwrite = TRUE)`"
 ---
 
 # assignment 01
@@ -21,7 +21,7 @@ library(RColorBrewer)
 
 ```{r inspecting the data, warning=FALSE, message=FALSE}
 
-offspring <- read_excel(here("assignment_01/data/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
+offspring <- read_excel(here("data/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
 
 # we want to see if the data for the experimental conditions have been imported correctly
 offspring %>% select(c("expType", "RawData", "compName", "compConcentration"))
