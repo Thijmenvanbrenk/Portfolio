@@ -1,0 +1,10 @@
+---
+title: "assignment 3"
+author: "Thijmen van Brenk"
+output: bookdown::html_document2
+---
+
+# assignment 3
+
+to show my ability at organizing files heres an example of the file structure from one of my previous projects
+![File structure from previous project](./data/File_organization.png)
