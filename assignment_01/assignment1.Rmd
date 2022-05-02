@@ -2,20 +2,26 @@
 title: "Amount of offspring for C. elegans incubated in different substances"
 author: "Thijmen van Brenk"
 date: "`r Sys.Date()`"
-output: html_document
+output: bookdown::html_document2
+bibliography: "`r rbbt::bbt_write_bib('bibliography.json', overwrite = TRUE)`"
 ---
 
+# assignment 01
+### checking the amount of offspring for C. elegans incubated in different substances with different concentrations       
+the data used in this assigment comes from [@vandervoetReportingGuidelineDevelopmental2021]
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(here)
 library(readxl)
+library(rbbt)
+library(RColorBrewer)
 ```
 
-# inspecting the data
-```{r inspecting the data}
 
-offspring <- read_excel(here("assignment_1/data/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
+```{r inspecting the data, warning=FALSE, message=FALSE}
+
+offspring <- read_excel(here("assignment_01/data/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
 
 # we want to see if the data for the experimental conditions have been imported correctly
 offspring %>% select(c("expType", "RawData", "compName", "compConcentration"))
@@ -41,14 +47,63 @@ offspring %>% select(c("RawData", "compName", "compConcentration"))
 # they are so we can now use the data for further analysis
 ```
 
-# graphical visualization of the data
-```{r graphical visualization of the data}
+
+```{r graphical visualization of the data, warning=FALSE}
 
 offspring_tidy %>%
   ggplot(aes(x = log10(compConcentration + 0.0001), y = RawData)) +
-  geom_jitter(aes(shape = expType, colour = compName), width = .1)
+  geom_jitter(aes(shape = expType, colour = compName), width = .1) +
+  labs(title = "Amount of offspring from C. elegans incubated in different substances",
+       subtitle = "Experiment data from (van der Voet et al. 2021)",
+       x = "Log 10 of compound concentration",
+       y = "Amount of offspring per C. elegans",
+       colour = "Compound name",
+       shape = "Experiment type") +
+  scale_shape_discrete(labels = c("Negative control", "Positive control", "Vehicle A control", "Experiment")) +
+  scale_colour_brewer(palette = "Dark2") +
+  theme_classic()
 
 ```
 
 the positive control of this experiment is Ethanol and the negative control is no added substance.
+<br>
+<br>
+<br>
+to analyze this experiment I would follow these steps.       
+1. making a new column which shows which condition every worm is located in. (for example, group1 would consist of 2,6-diisopropylnaphthalene with a concentration of 4.99 nM, etc.)       
+2. checking normality for every condition.        
+<br>
+_NORMALLY DISTRIBUTED DATA:_        
+3. perform ANOVA. with post-hoc tests and check if they differ from the control.       
+_NOT NORMALLY DISTRIBUTED DATA:_        
+3. perform kruskal - wallis test.       
+<br>
+4. to visualize this difference, make a smoothed line graph for every the mean of every concentration per substance.        
+5. compare these graphs with each other.
 
+
+```{r making normalized values, warning=FALSE}
+
+normalized_value <- offspring_tidy %>% 
+  group_by(compName) %>% filter(compName == "S-medium") %>%
+  summarise(mean = mean(RawData, na.rm = T))
+
+offspring_tidy <- offspring_tidy %>% mutate(normalized_offspring = 
+                                              RawData/normalized_value$mean)
+
+
+offspring_tidy %>%
+  ggplot(aes(x = log10(compConcentration + 0.0001), y = normalized_offspring)) +
+  geom_jitter(aes(shape = expType, colour = compName), width = .1) +
+  labs(title = "Amount of offspring from C. elegans incubated in different substances",
+       subtitle = "Experiment data from (van der Voet et al. 2021)",
+       x = "Log 10 of compound concentration",
+       y = "Normalized offspring amount by mean of negative control",
+       colour = "Compound name",
+       shape = "Experiment type") +
+  scale_shape_discrete(labels = c("Negative control", "Positive control", "Vehicle A control", "Experiment")) +
+  scale_colour_brewer(palette = "Dark2") +
+  theme_classic()
+```
+      
+  We normalize the data so we can see the difference between the different substances more easily.
