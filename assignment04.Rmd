@@ -1,0 +1,25 @@
+---
+title: "CV"
+author: "Thijmen van Brenk"
+output: bookdown::html_document2
+---
+
+```{r}
+library(datadrivencv)
+library(here)
+
+use_csv_data_storage(here("data/CV"))
+
+
+datadrivencv::use_datadriven_cv(
+  full_name = "Thijmen van Brenk",
+  html_location = here("CV/"),
+  pdf_location = here("CV/"),
+  data_location = here("data/CV_data//"),
+  use_network_logo = FALSE
+)
+
+read.csv2(here("data/CV_data/text_blocks.csv"))
+
+```
+
