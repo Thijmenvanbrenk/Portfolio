@@ -7,13 +7,11 @@ output:
     # set it to true for a self-contained HTML page but it'll take longer to render
     self_contained: FALSE
 # uncomment this line to produce HTML and PDF in RStudio:
-#knit: pagedown::chrome_print
+knit: pagedown::chrome_print
 ---
 
-```{r, include=FALSE}
-blank_lines <- function(n = 10){cat(rep("&nbsp;  ",n), sep="\n")}
 
-```
+
 
 
 
@@ -23,12 +21,12 @@ Aside
 ![Pasfoto](data/CV_foto.jpg){width=80%}
 
 
-Extra Informatie {#contact}
+Extra Informatie {#skills}
 --------------------------------------------------------------------------------
 
 - <i class="fa fa-envelope"></i> tvanbrenk@outlook.com
 - <i class="fa fa-github"></i> [github.com/thijmenvanbrenk](https://github.com/thijmenvanbrenk)
-- <i class="fa fa-phone"></i> 06 387 349 75
+- <i class="fa fa-phone"></i> 06 387-349-75
 - <i class="fa fa-car"></i> Rijbewijs B
 - <i class="fa fa-flag"></i> Nederlands
 - Voor meer informatie ben ik bereikbaar via mijn email
@@ -40,7 +38,7 @@ Talenkennis {#skills}
 - Nederlands: Moedertaal
 - Engels: Vloeiend
 
-Competenties
+Competenties {#skills}
 --------------------------------------------------------------------------------
 
 - Stressbestendig
@@ -49,11 +47,14 @@ Competenties
 - Doorzettingsvermogen
 - Loyaal
 
+<br/>           
+<br/>
+
 Disclaimer {#disclaimer}
 --------------------------------------------------------------------------------
 
 
-deze CV is gemaakt met de R package [**pagedown**](https://github.com/rstudio/pagedown).            
+Dit CV is gemaakt met de R package [**pagedown**](https://github.com/rstudio/pagedown).            
 Laatst geupdate op: `r Sys.Date()`.
 
 
@@ -66,19 +67,48 @@ Thijmen van Brenk {#title}
 
 ### Persoonsgegevens
 
-Voornaam:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Thijmen       
-Achternaam: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Van Brenk           
-Adres:      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             Tolsestraat 23       
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    4043 KB Opheusden            
-Geboortedatum: &nbsp;&nbsp;     27 April 2002           
-Geboorteplaats: &nbsp;&nbsp;    Nijmegen            
-Geslacht: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Man           
+```{css, echo=FALSE}
+
+table {   border-collapse: separate;   border-spacing: 15px 0;  }
+```
+
+
+<table> 
+  <tr> 
+    <td> Voornaam: </td> 
+    <td> Thijmen </td> 
+  </tr> 
+  <tr> 
+    <td> Achternaam: </td> 
+    <td> van Brenk </td> 
+  </tr>
+  <tr> 
+    <td> Adres: </td> 
+    <td> Tolsestraat 23 </td> 
+  </tr> 
+  <tr> 
+    <td>  </td> 
+    <td> 4043KB Opheusden </td> 
+  </tr> 
+    <tr> 
+    <td> Geboortedatum: </td> 
+    <td> 27/04/2002 </td> 
+  </tr> 
+  <tr> 
+    <td> Geboorteplaats: </td> 
+    <td> Nijmegen </td> 
+  </tr>
+  <tr> 
+    <td> Geslacht: </td> 
+    <td> Man </td> 
+  </tr> 
+</table>
 
 
 Opleidingen {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
-### Biologie en medisch laboratorium onderzoek
+### Biologie en medisch laboratoriumonderzoek
 
 Hogeschool Utrecht
 
@@ -87,10 +117,10 @@ Utrecht, NL
 heden - 2019
 
 - *Specialisatiekeuze:* Microbiologie
-- *Minor:* Data science for biologiy 1-2
-- *Projecten:*
-- Determinatie en biofilm assay van bacteriën bij Quaker Houghton
-- PCR validatie voor *Porphyromonas gingivalis*
+- *Minor:* Data science for biology 1-2
+- *Projecten:*            
+&nbsp;&nbsp;&nbsp;&nbsp;- Determinatie en biofilm assay van bacteriën bij Quaker Houghton           
+&nbsp;&nbsp;&nbsp;&nbsp;- PCR validatie voor *Porphyromonas gingivalis*
 
 ### HAVO Profiel N&G, N&T
 
@@ -101,24 +131,24 @@ Veenendaal, NL
 2019 - 2014
 
 
-Werk ervaring {data-icon=suitcase}
+Werkervaring {data-icon=suitcase}
 --------------------------------------------------------------------------------
 
 ### Administratief medewerker
 
-Ziekenhuis gelderse vallei
+Ziekenhuis Gelderse Vallei
 
 Ede, NL
 
 Heden - 2021
 
-- Inboeken patientmaterialen met behulp van XCARE en GLIMS
-- Inzetten patientmaterialen
-- Lab materialen bijvullen en HAP pakketten maken
+- Patiëntmaterialen inboeken met behulp van XCARE en GLIMS
+- Patiëntmaterialen inzetten 
+- Labmaterialen bijvullen en HAP-pakketten maken
 
 ### Medewerker kuikenbroederij
 
-Het anker pluimveehouderij
+Kuikenbroederij en Pluimveebedrijf Het Anker BV
 
 Ochten, NL
 
@@ -126,7 +156,7 @@ Ochten, NL
 
 :::concise
 - Kamers schoonmaken en ontsmetten
-- Kuiken sorteren op geslacht
+- Kuikens sorteren op geslacht
 - Kuikens enten
 :::
 
@@ -139,7 +169,7 @@ Opheusden, NL
 2019 - 2017
 
 :::concise
-- Vakken vullen
+- Vakkenvullen
 - Klanten assisteren
 :::
 
@@ -148,7 +178,7 @@ Cursussen
 
 ### Bijenhouden voor gevorderden
 
-Imkers Oost-betuwe
+Imkers Oost-Betuwe
 
 Bemmel, NL
 
@@ -157,7 +187,7 @@ heden - 2019
 
 ### Bijenhouden voor beginners
 
-Imkers Oost-betuwe
+Imkers Oost-Betuwe
 
 Bemmel, NL
 
