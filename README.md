@@ -10,9 +10,10 @@ General information: This project is made to show my abilities in coding. it con
 
 Assignment 1:
 -----------------------------------
+Goal of this assignment:
+Being able to use data from real experiments and being able to reproduce the results.
 
-
-
+COMPLETED
 
 
 
@@ -24,9 +25,10 @@ Assignment 1:
 
 Assignment 2:
 -----------------------------------
+Goal of this assignment:
+Being able to rank experiments on open science and reproducability.
 
-
-
+only completed part 1
 
 
 
@@ -38,10 +40,11 @@ Assignment 2:
 
 Assignment 3:
 -----------------------------------
+Goal of this assignment:
+Being able to store my files accordingly using the Guerilla analytics framework
 
 
-
-
+COMPLETED
 
 
 
@@ -52,10 +55,11 @@ Assignment 3:
 
 Assignment 4:
 -----------------------------------
+Goal of this assignment:
+Making a CV using RMarkdown
 
 
-
-
+COMPLETED
 
 
 
@@ -63,9 +67,66 @@ Assignment 4:
 
 
 -----------------------------------
-
+ 
 Assignment 5:
 -----------------------------------
+Goal of this assignment:
+Being able to learn a new skill without holding the hands of the teachers
+
+
+my skill to learn would be shiny in a metagenomics environment
+
+
+
+
+
+
+-----------------------------------
+
+Assignment 6:
+-----------------------------------
+Goal of this assignment:
+Being able to write an introduction using references and crediting those references accordingly
+
+
+
+
+
+
+-----------------------------------
+ 
+Making this a bookdown:
+-----------------------------------
+Goal of this assignment:
+Creating a bookdown to present my work easily
+
+
+
+
+
+
+-----------------------------------
+ 
+Assignment 7:
+-----------------------------------
+Goal of this assignment:
+Being able to use SQL to store datasets in databases
+
+
+
+
+
+
+
+
+-----------------------------------
+ 
+Assignment 8:
+-----------------------------------
+Goal of this assignment:
+Being able to create packages to use on a later date
+
+
 
 
 
@@ -77,3 +138,13 @@ Assignment 5:
 
 
 -----------------------------------
+ 
+Assignment 9:
+-----------------------------------
+Goal of this assignment:
+Being able to use parameters
+
+
+
+
+
