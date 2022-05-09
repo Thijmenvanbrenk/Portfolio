@@ -1,23 +1,14 @@
----
-title: "My portfolio"
-author: "Thijmen van Brenk"
-site: bookdown::bookdown_site
-documentclass: book
-output:
-  bookdown::gitbook: default
-  #bookdown::pdf_book: default
----
 
 
 
 
+# my portfolio
 
-########################################################################
 Title: Portfolio assignments
 Author: Thijmen van Brenk
 Business email: "tvanbrenk@outlook.com"
 General information: This project is made to show my abilities in coding. it contains different assignments with different data sets. the README file will have background information for every assignment in this portfolio
-########################################################################
+
 
 
 
@@ -35,7 +26,7 @@ COMPLETED
 
 
 
------------------------------------
+
 
 Assignment 2:
 -----------------------------------
@@ -50,7 +41,7 @@ only completed part 1
 
 
 
------------------------------------
+
 
 Assignment 3:
 -----------------------------------
@@ -65,7 +56,7 @@ COMPLETED
 
 
 
------------------------------------
+
 
 Assignment 4:
 -----------------------------------
@@ -80,7 +71,7 @@ COMPLETED
 
 
 
------------------------------------
+
  
 Assignment 5:
 -----------------------------------
@@ -95,7 +86,7 @@ my skill to learn would be shiny in a metagenomics environment
 
 
 
------------------------------------
+
 
 Assignment 6:
 -----------------------------------
@@ -107,7 +98,7 @@ Being able to write an introduction using references and crediting those referen
 
 
 
------------------------------------
+
  
 Making this a bookdown:
 -----------------------------------
@@ -119,7 +110,6 @@ Creating a bookdown to present my work easily
 
 
 
------------------------------------
  
 Assignment 7:
 -----------------------------------
@@ -133,7 +123,7 @@ Being able to use SQL to store datasets in databases
 
 
 
------------------------------------
+
  
 Assignment 8:
 -----------------------------------
@@ -151,7 +141,7 @@ Being able to create packages to use on a later date
 
 
 
------------------------------------
+
  
 Assignment 9:
 -----------------------------------

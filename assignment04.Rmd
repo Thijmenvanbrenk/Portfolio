@@ -1,16 +1,14 @@
 ---
-title: "Lijia Yu's resume"
-author: Lijia Yu
+title: "Thijmens CV"
+author: "Thijmen van Brenk"
 date: "`r Sys.Date()`"
 output:
   pagedown::html_resume:
     # set it to true for a self-contained HTML page but it'll take longer to render
-    self_contained: FALSE
+    self_contained: TRUE
 # uncomment this line to produce HTML and PDF in RStudio:
 knit: pagedown::chrome_print
 ---
-
-
 
 
 
@@ -67,7 +65,7 @@ Thijmen van Brenk {#title}
 
 ### Persoonsgegevens
 
-```{css, echo=FALSE}
+```{css making a table, echo=FALSE}
 
 table {   border-collapse: separate;   border-spacing: 15px 0;  }
 ```
