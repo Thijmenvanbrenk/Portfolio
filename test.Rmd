@@ -1,0 +1,8 @@
+---
+title: "Thijmens CV"
+author: "Thijmen van Brenk"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+![d](data/CV_thijmenvanbrenk.png)

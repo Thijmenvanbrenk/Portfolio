@@ -39,3 +39,6 @@ their is no significant difference in survival and consumption between te differ
 | code<br>availability     | TRUE                                           |
 
 The part of the data that is available can be accessed through this directory: "data/insects-957898-supplementary.xlsx"
+
+
+
