@@ -16,7 +16,7 @@ knit: pagedown::chrome_print
 
 Aside
 ================================================================================
-![Pasfoto](data/CV_foto.jpg){width=80%}
+![Pasfoto](CV_foto.jpg){width=80%}
 
 
 Extra Informatie {#skills}

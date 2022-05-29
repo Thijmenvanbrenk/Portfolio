@@ -1,17 +1,27 @@
 bookdown::gitbook:
+  self_contained: true
   css: style.css
   config:
     toc:
       before: |
-        <li><a href="./">A Minimal Book Example</a></li>
+        <li><a href="./">Thijmens portfolio</a></li>
       after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
-    download: ["pdf", "epub"]
-bookdown::pdf_book:
-  includes:
-    in_header: preamble.tex
-  latex_engine: xelatex
-  citation_package: natbib
-  keep_tex: yes
-bookdown::epub_book: default
+        <li><a href="https://github.com/thijmenvanbrenk" target="blank">Published with bookdown</a></li>
+      collapse: subsection
+      scroll_highlight: true
+    edit: https://github.com/Thijmenvanbrenk/Thijmenvanbrenk.github.io/%s
+    download: false
+    fontsettings:
+      theme: sepia
+      family: sans
+      size: 2
+    sharing:
+      facebook: false
+      github: true
+      twitter: false
+      linkedin: true
+      weibo: false
+      instapaper: false
+      vk: false
+      whatsapp: false
+      all: ["github", "linkedin"]

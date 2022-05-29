@@ -1,9 +1,9 @@
 ---
 title: "Amount of offspring for C. elegans incubated in different substances"
 author: "Thijmen van Brenk"
-date: "`r Sys.Date()`"
+date: "2022-05-29"
 output: bookdown::render_book()
-bibliography: "`r rbbt::bbt_write_bib('bibliography/bibliography01.json', overwrite = TRUE)`"
+bibliography: "bibliography/bibliography01.json"
 ---
 
 # Reproducability
@@ -13,7 +13,8 @@ bibliography: "`r rbbt::bbt_write_bib('bibliography/bibliography01.json', overwr
 Here i am showing you how i am able to reproduce results from a published paper    
 the data used in this assignment comes from [@vandervoetReportingGuidelineDevelopmental2021]
 
-```{r setup, message=FALSE, warning=FALSE}
+
+```r
 library(tidyverse)
 library(here)
 library(readxl)
@@ -22,13 +23,32 @@ library(RColorBrewer)
 ```
 
 
-```{r inspecting the data, warning=FALSE, message=FALSE}
 
+```r
 offspring <- read_excel(here("data/CE.LIQ.FLOW.062_Tidydata.xlsx"), sheet = 1)
 
 # we want to see if the data for the experimental conditions have been imported correctly
 offspring %>% select(c("expType", "RawData", "compName", "compConcentration"))
+```
 
+```
+## # A tibble: 360 x 4
+##    expType    RawData compName                   compConcentration
+##    <chr>        <dbl> <chr>                      <chr>            
+##  1 experiment      44 2,6-diisopropylnaphthalene 4.99             
+##  2 experiment      37 2,6-diisopropylnaphthalene 4.99             
+##  3 experiment      45 2,6-diisopropylnaphthalene 4.99             
+##  4 experiment      47 2,6-diisopropylnaphthalene 4.99             
+##  5 experiment      41 2,6-diisopropylnaphthalene 4.99             
+##  6 experiment      35 2,6-diisopropylnaphthalene 4.99             
+##  7 experiment      41 2,6-diisopropylnaphthalene 4.99             
+##  8 experiment      36 2,6-diisopropylnaphthalene 4.99             
+##  9 experiment      40 2,6-diisopropylnaphthalene 4.99             
+## 10 experiment      38 2,6-diisopropylnaphthalene 4.99             
+## # ... with 350 more rows
+```
+
+```r
 # as we can see, the rawdata should have been an integer, the compname and expType should have been a factor and the compconcentration should have been a double. lets change that
 
 offspring$RawData <- as.integer(offspring$RawData)
@@ -46,13 +66,32 @@ offspring_tidy$compConcentration[character_placement] <- character_value
 
 # lets check one last time if the data types are correct.
 offspring %>% select(c("RawData", "compName", "compConcentration"))
+```
 
+```
+## # A tibble: 360 x 3
+##    RawData compName                   compConcentration
+##      <int> <fct>                      <chr>            
+##  1      44 2,6-diisopropylnaphthalene 4.99             
+##  2      37 2,6-diisopropylnaphthalene 4.99             
+##  3      45 2,6-diisopropylnaphthalene 4.99             
+##  4      47 2,6-diisopropylnaphthalene 4.99             
+##  5      41 2,6-diisopropylnaphthalene 4.99             
+##  6      35 2,6-diisopropylnaphthalene 4.99             
+##  7      41 2,6-diisopropylnaphthalene 4.99             
+##  8      36 2,6-diisopropylnaphthalene 4.99             
+##  9      40 2,6-diisopropylnaphthalene 4.99             
+## 10      38 2,6-diisopropylnaphthalene 4.99             
+## # ... with 350 more rows
+```
+
+```r
 # they are so we can now use the data for further analysis
 ```
 
 
-```{r graphical visualization of the data, warning=FALSE}
 
+```r
 offspring_tidy %>%
   ggplot(aes(x = log10(compConcentration + 0.0001), y = RawData)) +
   geom_jitter(aes(shape = expType, colour = compName), width = .1) +
@@ -65,8 +104,9 @@ offspring_tidy %>%
   scale_shape_discrete(labels = c("Negative control", "Positive control", "Vehicle A control", "Experiment")) +
   scale_colour_brewer(palette = "Dark2") +
   theme_classic()
-
 ```
+
+<img src="assignment01_files/figure-html/graphical visualization of the data-1.png" width="672" />
 
 the positive control of this experiment is Ethanol and the negative control is no added substance.
 <br>
@@ -85,8 +125,8 @@ _NOT NORMALLY DISTRIBUTED DATA:_
 5. compare these graphs with each other.
 
 
-```{r making normalized values, warning=FALSE}
 
+```r
 normalized_value <- offspring_tidy %>% 
   group_by(compName) %>% filter(compName == "S-medium") %>%
   summarise(mean = mean(RawData, na.rm = T))
@@ -108,5 +148,7 @@ offspring_tidy %>%
   scale_colour_brewer(palette = "Dark2") +
   theme_classic()
 ```
+
+<img src="assignment01_files/figure-html/making normalized values-1.png" width="672" />
       
   We normalize the data so we can see the difference between the different substances more easily.

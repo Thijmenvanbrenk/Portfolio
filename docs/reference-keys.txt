@@ -1,0 +1,10 @@
+introduction
+personality
+reproducability
+extra-skills
+reproducability-1
+reproducing-data-from-a-published-paper
+checking-reproducability-possibility-for-published-papers.
+introduction-to-this-article
+grading-of-this-experiment-on-the-transparancy-criteria
+organisation-of-my-files

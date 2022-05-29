@@ -1,9 +1,9 @@
 ---
 title: "Open peer review of data about the toxicology of pesticedes for bees"
 author: "Thijmen van Brenk"
-date: "`r Sys.Date()`"
+date: "2022-05-29"
 output: bookdown::html_document2
-bibliography: "`r rbbt::bbt_write_bib('bibliography/bibliography02.json', overwrite = TRUE)`"
+bibliography: "bibliography/bibliography02.json"
 ---
 
 ## Checking reproducability possibility for published papers.
@@ -41,5 +41,5 @@ their is no significant difference in survival and consumption between te differ
 
 The part of the data that is available can be accessed through this directory: "data/insects-957898-supplementary.xlsx"
 
-### 
+
 
