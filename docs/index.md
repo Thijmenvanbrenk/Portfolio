@@ -1,12 +1,11 @@
 ---
 title: "Thijmens portfolio"
 author: "Thijmen van Brenk"
-date: "2022-05-29"
+date: "2022-05-30"
 site: bookdown::bookdown_site
 documentclass: book
-# bibliography: [book.bib, packages.bib]
+bibliography: [bibliography.bib]
 url: "https://thijmenvanbrenk.github.io"
-# cover-image: path to the social sharing image like images/cover.jpg
 link-citations: yes
 github-repo: thijmenvanbrenk/portfolio
 ---

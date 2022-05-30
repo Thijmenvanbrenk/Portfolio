@@ -1,10 +1,12 @@
 bookdown::gitbook:
+  split_bib: true
   self_contained: true
   css: style.css
+  split_by: chapter
   config:
     toc:
       before: |
-        <li><a href="./">Thijmens portfolio</a></li>
+        <li class="toc-logo"><a href="./"><img style="float:left;" src="data/CV_foto.jpg" alt="Image" height="250" width="200"></a><h2 class=".paddingtitel">Thijmens Portfolio </h2></li>
       after: |
         <li><a href="https://github.com/thijmenvanbrenk" target="blank">Published with bookdown</a></li>
       collapse: subsection

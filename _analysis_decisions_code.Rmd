@@ -1,0 +1,188 @@
+---
+title: "TE Letter RR"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Read in data
+```{r}
+#you will need to change the file path below to reflect where the data is saved on your computer
+AllData <- read.csv("C:/Users/tvanb/Documents/Data_analysis/DSFB2/Portfolio/data/AllDataRR.csv")
+
+#remove UMD2 and incomplete Data Note: The 2nd study from Robey did not include the episodic memory measures
+AllData <- AllData[AllData$Study != "UMD2",]
+AllData <- AllData[complete.cases(AllData),]
+
+#open package required for principal axis factoring
+#if you have never used this package before you will need to first install it using the line of code below
+#install.packages("psych")
+library(psych)
+```
+
+
+Individual Studies 
+Brewer & Unsworth
+```{r}
+#index out individual studies from the combined dataframe
+Brewer <- AllData[AllData$Study == "Brewer",]
+
+#fit a factor analysis to the 4 em measure specifying principle axis factoring
+fitBrewer <- fa(Brewer[,3:6], rotate = 'none', fm = 'pa')
+fitBrewer #view fit
+
+#extract scores and add to data file
+Brewer$EMComp <- fitBrewer$scores
+
+#correlation between EMcomposite and Testing Effect
+cor.test(Brewer$TE, Brewer$EMComp)
+```
+
+Pan et al Study 1
+```{r}
+Pan1 <- AllData[AllData$Study == "Pan1",]
+
+fitPan1 <- fa(Pan1[,3:6], rotate = 'none', fm = 'pa')
+fitPan1
+
+Pan1$EMComp <- fitPan1$scores
+
+cor.test(Pan1$TE, Pan1$EMComp)
+```
+
+Pan et al Study 2
+```{r}
+Pan2 <- AllData[AllData$Study == "Pan2",]
+
+fitPan2 <- fa(Pan2[,3:6], rotate = 'none', fm = 'pa')
+fitPan2
+
+Pan2$EMComp <- fitPan2$scores
+
+cor.test(Pan2$TE, Pan2$EMComp)
+```
+
+Robey Study1
+```{r}
+Robey <- AllData[AllData$Study == "UMD1",]
+
+fitRobey <- fa(Robey[,3:6], rotate = 'none', fm = 'pa')
+fitRobey
+
+Robey$EMComp <- fitRobey$scores
+
+cor.test(Robey$TE, Robey$EMComp)
+```
+
+Combined Not Mean-Centered. 
+Pan et al Study 1 and Study 2
+```{r}
+PanCombine <- rbind.data.frame(Pan1,Pan2)
+
+fitPanCombine <- fa(PanCombine[,3:6], rotate = 'none', fm = 'pa')
+fitPanCombine
+
+PanCombine$EMComp <- fitPanCombine$scores
+
+cor.test(PanCombine$TE, PanCombine$EMComp)
+```
+
+Pan et al Study 1 and Study 2 and Brewer
+```{r}
+BrewerPan <- rbind.data.frame(PanCombine, Brewer)
+
+fitBrewerPan<- fa(BrewerPan[,3:6], rotate = 'none', fm = 'pa')
+fitBrewerPan
+
+BrewerPan$EMComp <- fitBrewerPan$scores
+
+cor.test(BrewerPan$TE, BrewerPan$EMComp)
+```
+
+All Combined Data
+```{r}
+fit <- fa(AllData[,3:6], rotate = 'none', fm = 'pa')
+fit
+
+AllData$EMComp <- fit$scores
+
+cor.test(AllData$TE, AllData$EMComp)
+```
+
+Combined Data Mean Centered 
+Pan et al Study 1 and Study 2
+```{r}
+#mean center each variable within study
+Pan1$crC <- Pan1$cr - mean(Pan1$cr)
+Pan1$dfrC <- Pan1$dfr - mean(Pan1$dfr)
+Pan1$pictureC <- Pan1$picture - mean(Pan1$picture)
+Pan1$genderC <- Pan1$gender - mean(Pan1$gender)
+Pan1$TEC <- Pan1$TE - mean(Pan1$TE)
+
+Pan2$crC <- Pan2$cr - mean(Pan2$cr)
+Pan2$dfrC <- Pan2$dfr - mean(Pan2$dfr)
+Pan2$pictureC <- Pan2$picture - mean(Pan2$picture)
+Pan2$genderC <- Pan2$gender - mean(Pan2$gender)
+Pan2$TEC <- Pan2$TE - mean(Pan2$TE)
+
+PanCombine <- rbind.data.frame(Pan1,Pan2)
+
+fitPanCombine <- fa(PanCombine[,8:11], rotate = 'none', fm = 'pa')
+fitPanCombine
+
+PanCombine$EMCompC <- fitPanCombine$scores
+
+cor.test(PanCombine$TEC, PanCombine$EMCompC)
+```
+
+Pan et al Study 1 and Study 2 and Brewer
+```{r}
+Brewer$crC <- Brewer$cr - mean(Brewer$cr)
+Brewer$dfrC <- Brewer$dfr - mean(Brewer$dfr)
+Brewer$pictureC <- Brewer$picture - mean(Brewer$picture)
+Brewer$genderC <- Brewer$gender - mean(Brewer$gender)
+Brewer$TEC <- Brewer$TE - mean(Brewer$TE)
+Brewer$EMCompC <- NA
+
+BrewerPan <- rbind.data.frame(PanCombine, Brewer)
+
+fitBrewerPan<- fa(BrewerPan[,8:11], rotate = 'none', fm = 'pa')
+fitBrewerPan
+
+BrewerPan$EMCompC <- fitBrewerPan$scores
+
+cor.test(BrewerPan$TEC, BrewerPan$EMCompC)
+```
+
+All Studies
+```{r}
+Robey$crC <- Robey$cr - mean(Robey$cr)
+Robey$dfrC <- Robey$dfr - mean(Robey$dfr)
+Robey$pictureC <- Robey$picture - mean(Robey$picture)
+Robey$genderC <- Robey$gender - mean(Robey$gender)
+Robey$TEC <- Robey$TE - mean(Robey$TE)
+Robey$EMCompC <- NA
+
+AllDataC <- rbind.data.frame(BrewerPan, Robey)
+
+fitAllDataC<- fa(AllDataC[,8:11], rotate = 'none', fm = 'pa')
+fitAllDataC
+
+AllDataC$EMCompC <- fitAllDataC$scores
+
+cor.test(AllDataC$TEC, AllDataC$EMCompC)
+```
+
+Create Figures 
+```{r}
+#open package needed to make figures
+#If you have never opened ggplot2 before, you will need to first install using the line of code below
+#install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(AllData, aes(x = scale(TE), y = scale(EMComp)))+geom_point(shape = 16)+geom_smooth(method = lm, se = TRUE)+ xlab ("Retrieval Practice Effect") + ylab("EM Ability")+theme_classic()
+
+
+ggplot(AllDataC, aes(x = scale(TEC), y = scale(EMCompC)))+geom_point(shape = 16)+geom_smooth(method = lm, se = TRUE)+ xlab ("Retrieval Practice Effect") + ylab("EM Ability")+theme_classic()
+
+```
