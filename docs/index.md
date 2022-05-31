@@ -1,7 +1,7 @@
 ---
-title: "Thijmens portfolio"
+metadata title: "Thijmens portfolio"
 author: "Thijmen van Brenk"
-date: "2022-05-30"
+date: "2022-05-31"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [bibliography.bib]

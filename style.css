@@ -12,3 +12,15 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+.book .book-body .page-wrapper .page-inner section.normal a {
+  color: blue;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal a:hover {
+color: green; /* darker color when hovering */
+text-decoration: none;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal a:visited {
+color: red;

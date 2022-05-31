@@ -1,0 +1,8 @@
+---
+title: "Thijmens portfolio"
+author: "Thijmen van Brenk"
+date: "`r Sys.Date()`"
+output: bookdown::html_document2
+---
+
+# References
