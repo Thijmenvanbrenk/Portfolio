@@ -1,0 +1,83 @@
+---
+title: "paramaters"
+author: "Thijmen"
+output: bookdown::html_document2
+params:
+  country:
+    label: "Country"
+    input: select
+    choices: [Austria, Belgium, Bulgaria, Croatia, Cyprus, Czechia, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden]
+    value: Netherlands
+  year:
+    label: "Year"
+    min: 2020
+    max: 2022
+    step: 1
+    input: slider
+    sep: ""
+    value: 2020
+  period_start:
+    label: "Period start" 
+    min: 1
+    max: 12
+    step: 1
+    input: slider
+    sep: ""
+    value: 1
+  period_end:
+    label: "Period end"
+    min: 1
+    max: 12
+    step: 1
+    input: slider
+    sep: ""
+    value: 12
+---
+
+## creating paramaters for different data inputs
+
+to show my ability to use paramaters I will be using data from [the ECDC](https://www.ecdc.europa.eu/en/publications-data/data-daily-new-cases-covid-19-eueea-country). the data is available in this repository under "data/COVID_cases_31_05_2022"
+
+```{r setup, include=FALSE}
+library(plotly)
+library(tidyverse)
+```
+
+
+```{r creating the graphs, warning=FALSE, error=FALSE}
+
+# loading in data
+cases <- read.csv("data/COVID_cases_31_05_2022.csv")
+
+# filtering the params used
+cases_filtered <- cases %>% dplyr::filter(countriesAndTerritories == params$country, year == params$year, month >= params$period_start, month <= params$period_end) 
+
+# telling R the dateRep column is a date
+cases_filtered$dateRep <- as.Date(cases_filtered$dateRep, format = "%d/%m/%Y")
+
+# making a graph for cases
+cases_graph <- cases_filtered %>%
+  ggplot(aes(x = dateRep, y = cases)) +
+  geom_point(size = .5) +
+  geom_line() +
+  labs(title = paste("Covid related cases from month", params$period_start, "to", params$period_end, "in", params$year, "for", params$country),
+       x = "Month",
+       y = "Covid related cases") +
+  theme_classic()
+
+ggplotly(cases_graph)
+
+# making a graph for deaths
+deaths_graph <- cases_filtered %>%
+  ggplot(aes(x = dateRep, y = deaths)) +
+  geom_point(size = .5) +
+  geom_line() +
+  labs(title = paste("Covid related deaths from month", params$period_start, "to", params$period_end, "in", params$year, "for", params$country),
+       x = "Month",
+       y = "Covid related deaths") +
+  theme_classic()
+
+ggplotly(deaths_graph)
+```
+
+If you want to recreate these graphs with different params clone this repository and use put this command in the console (with your own params ofcourse): `bookdown::render_book(params = list(country = "Netherlands", year = 2021, period_start = 5, period_end = 10))`

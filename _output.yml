@@ -14,7 +14,7 @@ bookdown::gitbook:
     edit: https://github.com/Thijmenvanbrenk/Thijmenvanbrenk.github.io/%s
     download: false
     fontsettings:
-      theme: cyborg
+      theme: sepia
       family: sans
       size: 2
     sharing:
