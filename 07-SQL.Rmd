@@ -1,0 +1,124 @@
+---
+title: "SQL"
+author: "Thijmen"
+output: bookdown::html_document2
+params: 
+  password: "kjdfGH789"
+---
+
+## Using SQL to store data
+
+Databases are an important feature of data science (it is even in the name), thats why being able to request data from a database is equally as important as actually analyzing the data.        
+
+First we need to make a new database, this has been done with the use of DBeaver and the code for creating the database can be found below.        
+
+[]()        
+
+after creating the database we need to make a connection with DBeaver.        
+to reproduce this:        
+* make a new database in dbeaver called "*dengue_flu_data*".        
+* insert your own password in the yaml header of this file in my repository.        
+
+```{r connection}
+
+library(DBI)
+
+con <- dbConnect(RPostgres::Postgres(),
+                 dbname = "dengue_flu_data",
+                 host = "localhost",
+                 port = "5432",
+                 user = "postgres",
+                 password = params$password)
+
+```
+
+
+```{r loading data}
+
+library(tidyverse)
+library(dslabs)
+
+gapminder <- gapminder
+dengue_data <- read_csv("data/dengue_data.csv", skip = 11)
+flu_data <- read_csv("data/flu_data.csv", skip = 11)
+
+dengue_data %>% head(5)
+flu_data %>% head(5)
+
+
+```
+As we can see both the flu and dengue data are not tidy ( > 1 observations per row). This can easily be fixed with pivot_longer()
+
+```{r making tidy}
+
+dengue_tidy <- dengue_data %>% pivot_longer(cols = Argentina:Venezuela,
+                                            names_to = "country",
+                                            values_to = "Dengue_cases")
+dengue_tidy %>% head(5)
+
+
+flu_tidy <- flu_data %>% pivot_longer(cols = Argentina:Uruguay,
+                                      names_to = "country",
+                                      values_to = "Flu_cases")
+flu_tidy %>% head(5)
+# data is now tidy
+```
+
+If we want to eventually merge these 3 data files together we need to make the date and country variables equal:        
+* date from flu and dengue data need to be split into year, month, day.       
+* country needs to be of class factor       
+
+```{r}
+
+dengue_tidy$country <- as.factor(dengue_tidy$country) 
+flu_tidy$country <- as.factor(flu_tidy$country)
+
+dengue_tidy <- dengue_tidy %>% separate(Date, into = c("year", "month", "day"), convert = T, sep = "-")
+flu_tidy <- flu_tidy %>% separate(Date, into = c("year", "month", "day"), convert = T, sep = "-")
+
+
+```
+
+We will store this data so we always have our tidy versions by hand
+
+```{r}
+
+dengue_tidy %>% write.csv("data/denguetidy.csv")
+dengue_tidy %>% write_rds("data/denguetidy.rds")
+
+flu_tidy %>% write.csv("data/flutidy.csv")
+flu_tidy %>% write_rds("data/flutidy.rds")
+
+gapminder %>% write.csv("data/gapminder.csv")
+gapminder %>% write_rds("data/gapminder.rds")
+
+```
+
+Now we can insert these dataframes into SQL 
+
+```{r}
+
+dbWriteTable(con, "dengue", dengue_tidy)
+dbWriteTable(con, "flu", flu_tidy)
+dbWriteTable(con, "gapminder", gapminder)
+```
+
+To check if everything imported correctly we will go to DBeaver and inspect the data.
+
+[]()
+[]()
+[]()
+
+We can also get the datasets back and check them using R
+
+```{r}
+
+dengueSQL <- dbReadTable(con, "dengue")
+fluSQL <- dbReadTable(con, "flu")
+gapminderSQL <- dbReadTable(con, "gapminder")
+
+fluSQL %>% head(5)
+gapminderSQL %>% head(5)
+```
+It seems like inserting it into DBeaver and pulling it back changes the data classes for every variable.        
+
