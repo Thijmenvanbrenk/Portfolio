@@ -12,14 +12,14 @@ Databases are an important feature of data science (it is even in the name), tha
 
 First we need to make a new database, this has been done with the use of DBeaver and the code for creating the database can be found below.        
 
-[]()        
+![SQL script of database creation](data/database_creation.png)        
 
 after creating the database we need to make a connection with DBeaver.        
 to reproduce this:        
 * make a new database in dbeaver called "*dengue_flu_data*".        
 * insert your own password in the yaml header of this file in my repository.        
 
-```{r connection}
+```{r connection, message=FALSE}
 
 library(DBI)
 
@@ -33,10 +33,11 @@ con <- dbConnect(RPostgres::Postgres(),
 ```
 
 
-```{r loading data}
+```{r loading data, message=FALSE}
 
 library(tidyverse)
 library(dslabs)
+library(car)
 
 gapminder <- gapminder
 dengue_data <- read_csv("data/dengue_data.csv", skip = 11)
@@ -96,7 +97,7 @@ gapminder %>% write_rds("data/gapminder.rds")
 
 Now we can insert these dataframes into SQL 
 
-```{r}
+```{r, eval=FALSE}
 
 dbWriteTable(con, "dengue", dengue_tidy)
 dbWriteTable(con, "flu", flu_tidy)
@@ -105,9 +106,9 @@ dbWriteTable(con, "gapminder", gapminder)
 
 To check if everything imported correctly we will go to DBeaver and inspect the data.
 
-[]()
-[]()
-[]()
+![The imported dengue data](data/dengue_data_sql.png)
+![The imported flu data](data/flu_data_sql.png)
+![The imported gapminder data](data/gapminder_data_sql.png)
 
 We can also get the datasets back and check them using R
 
@@ -121,4 +122,162 @@ fluSQL %>% head(5)
 gapminderSQL %>% head(5)
 ```
 It seems like inserting it into DBeaver and pulling it back changes the data classes for every variable.        
+This is not a big problem, we just have to make sure to change the classes of certain values whenever we import something from DBeaver.        
+we can now combine these 3 dataframes into 1 big dataframe based on country and year.       
 
+```{r}
+
+flu_dengue_combined <- full_join(dengueSQL, fluSQL, by = c("country", "year", "month", "day"))
+
+# lets check how many years all 3 dataframes are covering
+
+flu_dengue_combined$year %>% min()
+flu_dengue_combined$year %>% max()
+
+# flu and dengue have a range from 2002 to 2015
+
+gapminderSQL$year %>% min()
+gapminderSQL$year %>% max()
+
+# gapminder has a range from 1960 to 2016.
+# we dont need all those years so we will cut those out
+
+gapminder_filtered <- gapminderSQL %>% filter(year >= 2002) %>% filter(year <= 2015)
+
+# lets update the gapminder data in SQL so it only contains this dataframe instead of the big one because it is not required
+
+dbWriteTable(con, "gapminder", gapminder, overwrite = T)
+
+# now we can combine all the data frames
+
+combined_all <- full_join(flu_dengue_combined, gapminder_filtered, by = c("country", "year"))
+```
+
+```{r, eval=FALSE}
+dbWriteTable(con, "gap_flu_den", combined_all)
+```
+
+Now that we have a table with all the data combined we can ask SQL to extract specific data to do some analysis on.       
+
+Lets say we want to know if there is a difference in the amount of flu cases of brazil and argentina in 2007.
+
+```{r}
+
+# getting all the relevant data
+
+arg_bra_flucases <- dbGetQuery(con, 
+                                  "SELECT 
+                                      \"month\",
+                                      country, 
+                                      gfd.\"Flu_cases\", 
+                                      population
+                                   FROM 
+                                      gap_flu_den gfd
+                                   WHERE 
+                                      country IN (\'Argentina\', \'Brazil\') AND
+                                      \"year\" = 2007;")
+
+# because brazil has a much higher population we will use the cases per 100.000 citizens.
+
+arg_bra_flucases <- arg_bra_flucases %>% mutate(per_100.000 = Flu_cases * 100000 / population)
+
+summary_arg_bra_flu <- arg_bra_flucases %>%
+  group_by(month, country) %>%
+  summarise(total = sum(per_100.000))
+
+summary_arg_bra_flu %>%
+  ggplot(aes(x = month.name[month], y = total, colour = country)) +
+  geom_point() +
+  geom_path(aes(group = country)) +
+  labs(title = "Flu cases per 100.000 citizens in argentina and brazil",
+       subtitle = "Data from 2007",
+       x = "Month of the year",
+       y = "Cases per 100.000 citizens") +
+    scale_x_discrete(limits = month.name) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.7))
+
+# on first glance Argentina seems to have more cases per 100.000 citizens, but just to make sure we will do a two sample t-test
+
+summary_arg_bra_flu %>%
+  group_by(country) %>%
+  summarise(p.value.normality = shapiro.test(total)$p.value)
+
+# both have p > 0.05, so they are normally distributed, now we can continue with levennes test.
+
+leveneTest(summary_arg_bra_flu$total, as.factor(summary_arg_bra_flu$country), center = mean)$P
+
+# p < 0.05, so they do not have equal variance. we can now perform the t test
+
+t.test(formula = summary_arg_bra_flu$total ~ summary_arg_bra_flu$country,
+       paired = F, var.equal = F)$p.value
+
+# p < 0.001, There is a significant difference between the total amount of cases per 100.000 citizens in Argentina and Brazil.
+
+```
+
+This had some interesting results. lets try something different this time.        
+lets see if some south-east asian countries have reduced their dengue infections between 2002 - 2015.
+
+```{r}
+
+SEAsia_dengue_cases <- dbGetQuery(con, 
+                                  "SELECT 
+                                      gfd.\"year\",
+                                      gfd.\"Dengue_cases\",
+                                      country
+                                   FROM 
+                                      gap_flu_den gfd
+                                   WHERE 
+                                      country IN (\'Singapore\', \'Indonesia\', \'Thailand\', \'Philippines\')")
+
+summary_SEAsia_den_cases <- 
+  SEAsia_dengue_cases %>%
+  group_by(year, country) %>%
+  summarize(total = sum(Dengue_cases))
+
+summary_SEAsia_den_cases %>%
+  ggplot(aes(x = year, y = total, colour = country)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2002, 2015, by = 2)) +
+  labs(title = "Total dengue cases per year",
+       x = "Year",
+       y = "Total cases per year") +
+  theme_classic()
+
+```
+
+The dengue cases seem to stay mostly stagnant with a few peaks here and there for every country, but in 2015 all dengue cases seem to have dropped which could be a good sign.       
+Now lets take a look at one last graph. It is always said that the flu peak is always during winter because the cold makes it easier for the influenza virus to infect people. lets check this for ourselves by checking the flu incidence for the year 2009 in 5 northern hemisphere countries.
+
+```{r}
+
+flu_incidence_northern <- dbGetQuery(con,
+                                     "SELECT
+                                        country,
+                                        \"month\",
+                                        gfd.\"Flu_cases\"
+                                      FROM 
+                                        gap_flu_den gfd
+                                      WHERE 
+                                        country IN (\'Netherlands\', \'Norway\', \'France\', \'Sweden\', \'Switzerland\') AND
+                                        \"year\" = 2009")
+
+summary_flu_inc_north <- flu_incidence_northern %>%
+  group_by(month, country) %>%
+  summarize(total = sum(Flu_cases))
+
+summary_flu_inc_north %>%
+  ggplot(aes(x = month.name[month], y = total, group = country, fill = country)) +
+  geom_col(position = position_dodge()) +
+  labs(title = "Flu incidence for different countries",
+       subtitle = "Data from 2009",
+       x = "Month",
+       y = "Flu incidence") +
+  scale_x_discrete(limits = month.name) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.8))
+
+```
+As we can see in this graph, all
