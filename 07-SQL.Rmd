@@ -18,6 +18,8 @@ after creating the database we need to make a connection with DBeaver.
 to reproduce this:        
 * make a new database in dbeaver called "*dengue_flu_data*".        
 * insert your own password in the yaml header of this file in my repository.        
+<br>        
+*IMPORTANT MESSAGE*: The source of the data used for these analyses is NOT available anymore, so the conclusions that have been formed based on the graphs are conclusions based on data that can not be confirmed anymore.
 
 ```{r connection, message=FALSE}
 
