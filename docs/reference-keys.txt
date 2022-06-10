@@ -15,4 +15,7 @@ writing-an-introduction-using-zotero-for-references
 creating-paramaters-for-different-data-inputs
 using-sql-to-store-data
 creating-a-package
+creating-an-epidemiology-map
+finding-an-outbreak
+creating-phylogenetic-trees
 references
