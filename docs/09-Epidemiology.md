@@ -381,17 +381,78 @@ plot(nj_tree, cex = .4)
 # this is the most simplistic phylogenetic tree to be made and just shows the relation between the different samples.
 # now lets change it up so it isnt as clutured and make it give the information we actually want
 
-# because I am not really interested in the accession number of every sample i want to change it to the country name 
+# we can also make it our tree rooted by adding the first sample ever taken
 
-nj_tree_renamed <- rename_taxa(nj_tree, metadata, accession, country)
+nj_rooted <- root(nj_tree, 1) %>% ladderize()
 
 # performing a bootstrap will not only tell us how good our lines are, it also give us the option to collapse some of them
 
+# we have to load the dna back with another method because otherwise boot.phylo cannot recognize it for some reason
+dna_boots <- fasta2DNAbin(here("data/MERS_nucleotides.fa"))
+```
 
+```
+## 
+##  Converting FASTA alignment into a DNAbin object... 
+## 
+## 
+##  Finding the size of a single genome... 
+## 
+## 
+##  genome size is: 4,062 nucleotides 
+## 
+## ( 60  lines per genome )
+## 
+##  Importing sequences... 
+## ..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+##  Forming final object... 
+## 
+## ...done.
+```
 
-ggplot(nj_tree_renamed) +
-  geom_tree() +
-  geom_tiplab(size = 3)
+```r
+bootstrap <- boot.phylo(nj_rooted, dna_boots, function(e) {root(bionj(dist.dna(e, model = "TN93")), 1)})
+```
+
+```
+## Running bootstraps:       100 / 100
+## Calculating bootstrap values... done.
+```
+
+```r
+# because I am not really interested in the accession number of every sample i want to change it to the country name 
+
+# now we can add our bootstrap values
+plot(nj_rooted, cex = .4)
+axisPhylo()
+nodelabels(bootstrap, cex = .7)
+```
+
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-2.png" width="672" />
+
+```r
+    # now we can collapse some of our nodes
+    nj_collapsed <- nj_rooted
+
+    # step 1: figure out the row numbers of the branches that can be collapsed
+    N <- length(nj_rooted$tip.label)
+    tocollapse <- match(which(bootstrap<65)+N, nj_rooted$edge[,2])
+
+    # step 2: get rid of those branches
+    nj_collapsed$edge.length[tocollapse] <- 0
+    nj_collapsed <- di2multi(nj_collapsed, tol = 0.00001)
+
+    # step 3: check if it worked by plotting this new tree
+    plot(nj_collapsed, cex = .45)
+```
+
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-3.png" width="672" />
+
+```r
+# lets add some nice colours to the plot so we can see the countries more easily
+
+nj_tree_withcolours <- ggtree(nj_collapsed) +
+                          geom_treescale()
 ```
 
 ```
@@ -399,7 +460,27 @@ ggplot(nj_tree_renamed) +
 ## you can set 'options(ignore.negative.edge=TRUE)', then re-run ggtree.
 ```
 
-<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-2.png" width="672" />
+```r
+    metadata$country <- as.factor(metadata$country)
+
+
+nj_tree_withcolours <- nj_tree_withcolours %<+% metadata +
+  geom_tiplab(aes(color = country), size = 2)
+  geom_tippoint(aes(color = country), alpha = .25)
+```
+
+```
+## mapping: node = ~node, subset = ~isTip, colour = ~country 
+## geom_point_g_gtree: na.rm = FALSE
+## stat_tree_label: na.rm = FALSE
+## position_identity
+```
+
+```r
+nj_tree_withcolours
+```
+
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-4.png" width="672" />
 
 
 
@@ -414,6 +495,17 @@ library(tidyverse)
 library(ggplot2)
 #BiocManager::install("ggtree")
 library(ggtree)
+
+
+
+
+dna2 <- fasta2DNAbin(here("data/MERS_nucleotides.fa"))
+
+dna2
+
+
+
+
 
 
 dna <- fasta2DNAbin(file = here("data/MERS_nucleotides.fa"))

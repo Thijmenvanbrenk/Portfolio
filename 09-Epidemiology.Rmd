@@ -12,8 +12,8 @@ To learn these skills i have made a small plan for a few steps i want to go thro
 1.    Find a suitable outbreak with available data.       
 2.    Process the data to get simple phylogenetic trees.        
 3.    Add regions to these trees.       
-4.    Put these trees over a geographical map to see location.        
-5.    Make these geopgraphicals maps interactive for easy visibility.       
+4.    Create a shiny to make it easy for others to create these graphs       
+5.    Give more paramaters, like showing only specific regions or adding different species. (optional depending on time)       
 <br>        
 
 ### Finding an outbreak
@@ -45,7 +45,7 @@ I will only be working with these 2 datafiles.
 For learning how to create these phylogenetic trees I have taken inspiration from a small tutorial on how to create Phylogenetic trees. You can find this tutorial [Here](https://fuzzyatelin.github.io/bioanth-stats/module-24/module-24.html).       
 
 
-```{r}
+```{r, include=FALSE}
 # we need to load a few packages first
 #BiocManager::install("msa")
 library(msa)
@@ -58,14 +58,17 @@ library(ape)
 library(ggtree)
 #BiocManager::install("treeio")
 library(treeio)
+```
 
+
+```{r}
 # now we need to load in the nucleotides
 dna <- readDNAStringSet(here("data/MERS_nucleotides.fa"))
 dna
 
 # and the metadata
 metadata <- read.csv(here("data/MERS_annotation.csv"))
-metadata %>% head(10) %>% knitr::kable()
+metadata %>% head(5) %>% knitr::kable()
 
 # we only want the years from the metadata so lets extract those
 metadata <- metadata %>% separate(collection_date, into = "collection_date", sep = 4)
@@ -98,23 +101,19 @@ nj_rooted <- root(nj_tree, 1) %>% ladderize()
 
 # we have to load the dna back with another method because otherwise boot.phylo cannot recognize it for some reason
 dna_boots <- fasta2DNAbin(here("data/MERS_nucleotides.fa"))
-bootstrap <- boot.phylo(nj_rooted, dna2, function(e) {root(bionj(dist.dna(e, model = "TN93")), 1)})
-
-# because I am not really interested in the accession number of every sample i want to change it to the country name 
-
-nj_rooted_renamed <- rename_taxa(nj_rooted, metadata, accession, country)
+bootstrap <- boot.phylo(nj_rooted, dna_boots, function(e) {root(bionj(dist.dna(e, model = "TN93")), 1)})
 
 # now we can add our bootstrap values
-plot(nj_rooted_renamed, cex = .4)
+plot(nj_rooted, cex = .4)
 axisPhylo()
 nodelabels(bootstrap, cex = .7)
 
-    # now we can collapse some of our nodes
-    nj_collapsed <- nj_rooted_renamed
+    # now we can collapse some of our nodes that have too low values
+    nj_collapsed <- nj_rooted
 
     # step 1: figure out the row numbers of the branches that can be collapsed
-    N <- length(nj_rooted_renamed$tip.label)
-    tocollapse <- match(which(bootstrap<65)+N, nj_rooted_renamed$edge[,2])
+    N <- length(nj_rooted$tip.label)
+    tocollapse <- match(which(bootstrap<65)+N, nj_rooted$edge[,2])
 
     # step 2: get rid of those branches
     nj_collapsed$edge.length[tocollapse] <- 0
@@ -124,123 +123,19 @@ nodelabels(bootstrap, cex = .7)
     plot(nj_collapsed, cex = .45)
 
 # lets add some nice colours to the plot so we can see the countries more easily
+
+nj_tree_withcolours <- ggtree(nj_collapsed) +
+                          geom_treescale()
     
-  plot(nj_collapsed, show.tip = FALSE)
-  title("NJ tree for relation between samples for different countries")
-  mycolours <- colorRampPalette(rep(c("blue", "green", "pink", "purple", "white", "red", "yellow", "black"), 2))
-  tiplabels(nj_collapsed$tip.label, bg = transp(fac2col(as.factor(metadata$country), col.pal = mycolours), .3), cex = .4)
-  countries <- metadata$country %>% unique()
-  legend("bottomleft", fill = fac2col(as.factor(countries), col.pal = mycolours), legend = countries)
+    metadata$country <- as.factor(metadata$country)
 
 
+nj_tree_withcolours <- nj_tree_withcolours %<+% metadata +
+  geom_tiplab(aes(color = country), size = 2)
+  geom_tippoint(aes(color = country), alpha = .25)
 
-
-
-plot(nj_tree_renamed, cex = .4)
-
-
-ggplot(nj_tree_renamed) +
-  geom_tree() +
-  geom_tiplab(size = 3)
-
-
-
-
-
+nj_tree_withcolours
 ```
 
-
-
-
-
-
-```{r practise, eval=FALSE}
-library(adegenet)
-library(here)
-library(tidyverse)
-library(ggplot2)
-#BiocManager::install("ggtree")
-library(ggtree)
-
-
-
-
-dna2 <- fasta2DNAbin(here("data/MERS_nucleotides.fa"))
-
-dna2
-
-
-
-
-
-
-dna <- fasta2DNAbin(file = here("data/MERS_nucleotides.fa"))
-dna
-
-annot <- read.csv(here("data/MERS_annotation.csv"))
-
-library(ape)
-D <- dist.dna(dna, model = "TN93")
-length(D)
-
-temp <- as.data.frame(as.matrix(D))
-table.paint(temp, cleg=0, clabel.row=.5, clabel.col=.5)
-
-
-tre <- nj(D)
-class(tre)
-
-h_cluster <- hclust(D, method = "average", members = NULL) # method = average is used for UPGMA, members can be equal to NULL or a vector with a length of size D
-plot(h_cluster, cex = 0.6, show.tip = F)
-
-tre <- ladderize(tre)
-
-plot(tre, cex = 0.6)
-
-annot <- annot %>% separate(collection_date, into = c("collection_date"), sep = 4)
-annot$collection_date <- as.numeric(annot$collection_date)
-
-plot(tre, show.tip=FALSE, main = "Unrooted NJ tree") # gets rid of the labels on the end, refer to the first tree depicted above
-title("Unrooted NJ tree")
-myPal <- colorRampPalette(c("red","yellow","green","blue"))
-tiplabels(annot$collection_date, bg=num2col(annot$collection_date, col.pal=myPal), cex=.5) #we use the annot dataset to get our years
-temp <- pretty(2013:2019, 2)
-legend("bottomleft", fill=num2col(temp, col.pal=myPal), leg=temp, ncol=2)
-
-tre2 <- root(tre, out = 1)
-tre2 <- ladderize(tre2)
-
-x <- as.vector(D)
-y <- as.vector(as.dist(cophenetic(tre2)))
-plot(x, y, xlab="original pairwise distances", ylab="pairwise distances on the tree", main="Is NJ appropriate?", pch=20, col=transp("black",.1), cex=3)
-abline(lm(y~x), col="red")
-
-
-
-tre3 <- as.phylo(hclust(D,method="average"))
-y <- as.vector(as.dist(cophenetic(tre3)))
-plot(x, y, xlab="original pairwise distances", ylab="pairwise distances on the tree", main="Is UPGMA appropriate?", pch=20, col=transp("black",.1), cex=3)
-abline(lm(y~x), col="red")
-
-cor(x, y)^2
-
-
-
-
-
-myBoots <- boot.phylo(tre2, dna, function(e) root(nj(dist.dna(e, model = "TN93")),1))
-
-myBoots
-
-
-plot(tre2, show.tip=FALSE, edge.width=2)
-title("NJ tree + bootstrap values")
-tiplabels(frame="none", pch=20, col=transp(num2col(annot$collection_date, col.pal=myPal),.7), cex=3, fg="transparent")
-
-axisPhylo()
-temp <- pretty(2013:2019, 5)
-legend("topright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2)
-nodelabels(myBoots, cex=.6)
-
-```
-
+### Making Phylogeny automated
+Now that I have created something i want to be able to show easily without all the hassle of recreating this code over and over again I will implement this into a shiny so its more user friendly.       

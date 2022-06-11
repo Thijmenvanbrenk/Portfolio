@@ -1,0 +1,154 @@
+---
+title: "shiny for phylogenetic trees"
+author: "Thijmen"
+runtime: shiny
+---
+
+```{r, include=FALSE}
+
+library(shiny)
+library(shinythemes)
+library(msa)
+library(tidyverse)
+library(tidyr)
+library(here)
+library(adegenet)
+library(ape)
+#BiocManager::install("ggtree")
+library(ggtree)
+#BiocManager::install("treeio")
+library(treeio)
+
+```
+
+```{r, include=FALSE}
+ui <- fluidPage(
+  
+  titlePanel("Create your own phylogenetic tree"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      
+      h4("Input files"),
+      
+      fileInput(inputId = "fasta_file",
+                label = "Select a fasta file",
+                accept = ".fa"),
+      
+      fileInput(inputId = "metadata",
+                label = "Select the metadata",
+                accept = ".csv"),
+      
+      width = 3
+    
+    ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Phylogenetic tree",
+                 tableOutput("meta"),
+                 plotOutput("phylo")
+          
+        ),
+        
+        tabPanel("How to download the required files",
+                 tags$div(
+                   tags$h4("Requirements"),
+                   "This shiny requires very specific data files, so to make sure there isnt any confusion I made a list of what these files need:",
+                   tags$br(),
+                   "1. All sequences have to be the same length"
+                 )
+          
+        )
+      ),
+      
+      width = 9
+    )
+    
+  )
+  
+)
+
+server <- function(input, output, session) {
+  
+  # inputting the fasta file
+  
+  nucleotides <- reactive({
+  
+    req(input$fasta_file)
+    
+    readDNAStringSet(input$fasta_file$datapath)
+  
+  })
+  # inputting the metadata file
+  
+  metadata <- reactive({
+    
+    req(input$metadata)
+    
+    read.csv(input$metadata$datapath)
+  })
+  # extracting just the years from metadata
+  
+  metadata_year_temp <- reactive({
+    
+    metadata() %>% separate(collection_date, into = "collection_date", sep = 4)
+  })
+  # making inputted tree
+  
+  nj_tree <- reactive({
+    
+    as.DNAbin(nucleotides()) %>%
+      dist.dna(model = "TN93") %>%
+      bionj() %>%
+      root(outgroup = 1) %>%
+      ladderize()
+  })
+  # importing dna again because bootstrap wants to for some reason
+  
+  dna_boots <- reactive({
+    
+    req(input$fasta_file)
+    
+    fasta2DNAbin(input$fasta_file$datapath)
+  })
+  # create bootstrap values
+  
+  bootstrap <- reactive({
+    
+    boot.phylo(nj_tree(), dna_boots(), function(e) {root(bionj(dist.dna(e, model = "TN93")), 1)})
+  })
+  
+  # lets collapse some branches
+  tocollapse <- reactive({
+    
+    match(which(bootstrap() < 65) + length(nj_tree()$tip.label), nj_tree()$edge[,2])
+  })
+
+  # time to make the graph
+  
+  output$phylo <- renderPlot({
+    
+    #nj_tree()$edge.length[tocollapse()] <- 0
+    #nj_tree <- di2multi(nj_tree, tol = 0.00001)
+    
+    actual_tree <- ggtree(nj_tree()) +
+      geom_treescale()
+    
+    #metadata()$country <- as.factor(metadata()$country)
+    
+    actual_tree %<+% metadata() +
+      geom_tiplab(aes(color = as.factor(country)), size = 2.5)
+  })
+  
+  
+}
+```
+
+
+```{r, echo=FALSE}
+shinyApp(ui, server, options = list(height=650, width = 1300))
+
+```
+
+
