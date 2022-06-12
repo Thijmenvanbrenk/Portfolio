@@ -7,20 +7,20 @@ output: bookdown::html_document2
 ## Creating an epidemiology map
 
 With the infrastructure we have created to make it easier for people to connect, we have also made the infrastructure for diseases to spread. Many of these diseases cause allot of trouble and can weaken whole societies, just take a look at SARS-COV-19. To figure out how these diseases spread is essential to figure out how a pathogen behaves. Figuring this out gives us the possibility to take precautions so it does not happen again, as can be seen by this report from the [CDC.](https://www.cdc.gov/eis/downloads/epidemiology-factsheet.pdf)        
-In my future i want to be able to process epidemiological data to figure out where a disease originated, how it spread to different people and make this data easily readable for non data scientists with the help of shiny.       
-To learn these skills i have made a small plan for a few steps i want to go through:        
+In my future I want to be able to process epidemiological data to figure out where a disease originated, how it spread to different people and make this data easily readable for non data scientists with the help of shiny.       
+To learn these skills I have made a small plan for a few steps I want to go through:        
 1.    Find a suitable outbreak with available data.       
 2.    Process the data to get simple phylogenetic trees.        
 3.    Add regions to these trees.       
 4.    Create a shiny to make it easy for others to create these graphs       
-5.    Give more paramaters, like showing only specific regions or adding different species. (optional depending on time)       
+5.    Give more parameters, like showing only specific regions or adding different species. (optional depending on time)       
 <br>        
 
 ### Finding an outbreak
 
-To be able and actually to create phylogenetic trees i need to have some data available to me.        
+To be able and actually to create phylogenetic trees I need to have some data available to me.        
 I dont want a massive amount of data like from the covid pandemic because this would be too much data to process while this is only for my own learning purpose.        
-the NCBI has a very detailed database of different virus variation, for this exercise i will be using the data from the MERS-Cov outbreak (2013-2019).       
+the NCBI has a very detailed database of different virus variation, for this exercise I will be using the data from the MERS-Cov outbreak (2013-2019).       
 If you want to download this data for yourself go to [THIS SITE](https://www.ncbi.nlm.nih.gov/genome/viruses/variation/) and follow the following steps:        
 1. Go to "MERS coronavirus"
 2. Select nucleotide sequence type.       
@@ -100,7 +100,7 @@ metadata$collection_date <- as.numeric(metadata$collection_date)
 dna <- as.DNAbin(dna) # sequence has to be the correct class
 
 # to create a phylogenetic tree we need to calculate the distance between all the sequences
-# there are many different models to choose from, and it was not easy to choose out of all the options because there are allot of upsides and allot of downsides to all the possible methods. for this time i have chosen to use the Tamaru and Nei methode (TN93). Because they take into account that its different to swap from A-G then C-T and vice versa.
+# there are many different models to choose from, and it was not easy to choose out of all the options because there are allot of upsides and allot of downsides to all the possible methods. for this time I have chosen to use the Tamaru and Nei methode (TN93). Because they take into account that its different to swap from A-G then C-T and vice versa.
 
 dna_distance <- dist.dna(dna, model = "TN93")
 
@@ -211,7 +211,7 @@ zoomed %<+% metadata +
 <img src="09-Epidemiology_files/figure-html/unnamed-chunk-2-5.png" width="672" />
 
 ### Making Phylogeny automated
-Now that I have created something i want to be able to show easily without all the hassle of recreating this code over and over again I will implement this into a shiny so its more user friendly.         
+Now that I have created something I want to be able to show easily, without all the hassle of recreating this code over and over again, I will implement this into a shiny so its more user friendly.         
 Because hosting a shiny in bookdown is not possible without launching it as an app I will just include the code. The original file can be found at "data/phylo.shiny.Rmd".
 
 
