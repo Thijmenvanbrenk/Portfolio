@@ -11,7 +11,6 @@ If you want to reproduce the book that is created in here make sure to install t
 install.packages("tidyverse")
 install.packages("here")
 install.packages("readxl")
-install.packages("rbbt")
 install.packages("RColorBrewer")
 install.packages("plotly")
 install.packages("DBI")
@@ -20,10 +19,16 @@ install.packages("car")
 install.packages("tidyr")
 install.packages("adegenet")
 install.packages("ape")
+install.packages("devtools")
+devtools::install_github("paleolimbot/rbbt")
+# update all packages mentioned
 install.packages("BiocManager")
 BiocManager::install("msa")
+# update all packages mentioned
 BiocManager::install("ggtree")
+# update all packages mentioned
 BiocManager::install("treeio")
+# update all packages mentioned
 ```
 And make sure to change the parameter in "07-SQL.Rmd" has your password to your DBeaver account.
 And make a database in DBeaver called "dengue_flu_data".
