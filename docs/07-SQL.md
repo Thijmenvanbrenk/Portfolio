@@ -3,7 +3,7 @@ title: "SQL"
 author: "Thijmen"
 output: bookdown::html_document2
 params: 
-  password: "kjdfGH789"
+  password: ""
 ---
 
 ## Using SQL to store data
