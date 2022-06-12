@@ -25,5 +25,7 @@ BiocManager::install("msa")
 BiocManager::install("ggtree")
 BiocManager::install("treeio")
 ```
+And make sure to change the parameter in "07-SQL.Rmd" has your password to your DBeaver account.
+And make a database in DBeaver called "dengue_flu_data".
 
 More information can be found in "index.Rmd"
