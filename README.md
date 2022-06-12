@@ -1,150 +1,29 @@
 ########################################################################
-Title: Portfolio assignments
+Title: Portfolio
 Author: Thijmen van Brenk
 Business email: "tvanbrenk@outlook.com"
-General information: This project is made to show my abilities in coding. it contains different assignments with different data sets. the README file will have background information for every assignment in this portfolio
+General information: This project is made to show my abilities in data science. 
 ########################################################################
 
-
-
-
-Assignment 1:
------------------------------------
-Goal of this assignment:
-Being able to use data from real experiments and being able to reproduce the results.
-
-COMPLETED
-
-
-
-
-
-
-
------------------------------------
-
-Assignment 2:
------------------------------------
-Goal of this assignment:
-Being able to rank experiments on open science and reproducability.
-
-only completed part 1
-
-
-
-
-
-
-
------------------------------------
-
-Assignment 3:
------------------------------------
-Goal of this assignment:
-Being able to store my files accordingly using the Guerilla analytics framework
-
-
-COMPLETED
-
-
-
-
-
-
------------------------------------
-
-Assignment 4:
------------------------------------
-Goal of this assignment:
-Making a CV using RMarkdown
-
-
-COMPLETED
-
-
-
-
-
-
------------------------------------
- 
-Assignment 5:
------------------------------------
-Goal of this assignment:
-Being able to learn a new skill without holding the hands of the teachers
-
-
-my skill to learn would be shiny in a metagenomics environment
-
-
-
-
-
-
------------------------------------
-
-Assignment 6:
------------------------------------
-Goal of this assignment:
-Being able to write an introduction using references and crediting those references accordingly
-
-
-
-
-
-
------------------------------------
- 
-Making this a bookdown:
------------------------------------
-Goal of this assignment:
-Creating a bookdown to present my work easily
-
-
-
-
-
-
------------------------------------
- 
-Assignment 7:
------------------------------------
-Goal of this assignment:
-Being able to use SQL to store datasets in databases
-
-
-
-
-
-
-
-
------------------------------------
- 
-Assignment 8:
------------------------------------
-Goal of this assignment:
-Being able to create packages to use on a later date
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------
- 
-Assignment 9:
------------------------------------
-Goal of this assignment:
-Being able to use parameters
-
-
-
-
-
+This repository is a collection of skills I have gathered over a few months of data science.
+If you want to reproduce the book that is created in here make sure to install the following packages
+```
+install.packages("tidyverse")
+install.packages("here")
+install.packages("readxl")
+install.packages("rbbt")
+install.packages("RColorBrewer")
+install.packages("plotly")
+install.packages("DBI")
+install.packages("dslabs")
+install.packages("car")
+install.packages("tidyr")
+install.packages("adegenet")
+install.packages("ape")
+install.packages("BiocManager")
+BiocManager::install("msa")
+BiocManager::install("ggtree")
+BiocManager::install("treeio")
+```
+
+More information can be found in "index.Rmd"
