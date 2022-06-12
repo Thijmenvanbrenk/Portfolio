@@ -34,9 +34,9 @@ params:
     value: 12
 ---
 
-## creating paramaters for different data inputs
+## Creating paramaters for different data inputs
 
-to show my ability to use paramaters I will be using data from [the ECDC](https://www.ecdc.europa.eu/en/publications-data/data-daily-new-cases-covid-19-eueea-country). the data is available in this repository under "data/COVID_cases_31_05_2022"
+To show my ability to use paramaters I will be using data from [the ECDC](https://www.ecdc.europa.eu/en/publications-data/data-daily-new-cases-covid-19-eueea-country). the data is available in this repository under "data/COVID_cases_31_05_2022"
 
 ```{r setup, include=FALSE}
 library(plotly)
@@ -80,4 +80,4 @@ deaths_graph <- cases_filtered %>%
 ggplotly(deaths_graph)
 ```
 
-If you want to recreate these graphs with different params clone this repository and use put this command in the console (with your own params ofcourse): `bookdown::render_book(params = list(country = "Netherlands", year = 2021, period_start = 5, period_end = 10))`
+If you want to recreate these graphs with different parameters, clone this repository and use put this command in the console (with your own params ofcourse): `bookdown::render_book(params = list(country = "Netherlands", year = 2021, period_start = 5, period_end = 10))`

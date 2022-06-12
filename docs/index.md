@@ -1,7 +1,7 @@
 ---
 metadata title: "Thijmens portfolio"
 author: "Thijmen van Brenk"
-date: "2022-06-11"
+date: "2022-06-12"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [bibliography.bib]
@@ -35,4 +35,7 @@ In the reproducability section I will be handling topics that have to do with op
 
 In the extra skills section I will be showing you some of my extra skills like different programming languages.       
 -- [Using references:](https://thijmenvanbrenk.github.io/extra-skills-1.html#writing-an-introduction-using-zotero-for-references) In this section you can see how i have written an introduction using multiple references.        
--- [Using parameters:](https://thijmenvanbrenk.github.io/extra-skills-1.html#creating-paramaters-for-different-data-inputs) in this section you can see how i made use of multiple parameter settings to make graph making easier.
+-- [Using parameters:](https://thijmenvanbrenk.github.io/extra-skills-1.html#creating-paramaters-for-different-data-inputs) in this section you can see how i made use of multiple parameter settings to make graph making easier.        
+-- [Using databases:](https://thijmenvanbrenk.github.io/extra-skills-1.html#Using-SQL-to-store-data) in this section you will see how I store data in a database and how i extract specific values from it.       
+-- [Creating a package](https://thijmenvanbrenk.github.io/extra-skills-1.html#Creating-a-package) in this section you can see one of my created packages with all the attributes.       
+-- [Making a phylogeny plot](https://thijmenvanbrenk.github.io/extra-skills-1.html#Creating-an-epidemiology-map) in this section you can see how i went through a workflow of creating a phylogeny tree, how to use paramaters to show different values and how i made it reproducible by integrating it into an R-shiny

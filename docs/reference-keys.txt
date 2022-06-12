@@ -18,4 +18,5 @@ creating-a-package
 creating-an-epidemiology-map
 finding-an-outbreak
 creating-phylogenetic-trees
+making-phylogeny-automated
 references

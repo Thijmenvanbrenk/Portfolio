@@ -444,4 +444,4 @@ summary_flu_inc_north %>%
 ```
 
 <img src="07-SQL_files/figure-html/unnamed-chunk-9-1.png" width="672" />
-As we can see in this graph, all
+As we can see in this graph, most flu incidence occurs during the winter so saying that people get sick from the flu in the winter would be correct.

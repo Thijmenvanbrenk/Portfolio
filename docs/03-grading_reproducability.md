@@ -1,7 +1,7 @@
 ---
 title: "Open peer review of data about the toxicology of pesticedes for bees"
 author: "Thijmen van Brenk"
-date: "2022-06-11"
+date: "2022-06-12"
 output: bookdown::html_document2
 ---
 
@@ -72,7 +72,7 @@ the data has been downloaded and is available in this repository under the name 
 -- (+) easy to understand code        
 -- (-) chunks dont have names.       
 -- (-) the individual results are far away from each other.       
--- (-) the same tests are set of tests are performed multiple times, making a function would make chances of mistakes less likely
+-- (-) the same tests are are performed multiple times, making a function would make chances of mistakes less likely
 <br>        
 
 * what this code is trying to achieve      

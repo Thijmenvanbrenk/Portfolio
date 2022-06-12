@@ -9,8 +9,8 @@ output: bookdown::render_book()
 
 ## Reproducing data from a published paper
 
-Here i am showing you how i am able to reproduce results from a published paper    
-the data used in this assignment comes from [@vandervoetReportingGuidelineDevelopmental2021]
+Here I am showing you how I am able to reproduce results from a published paper.    
+The data used in this assignment comes from [@vandervoetReportingGuidelineDevelopmental2021]
 
 ```{r setup, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -67,21 +67,23 @@ offspring_tidy %>%
 
 ```
 
-the positive control of this experiment is Ethanol and the negative control is no added substance.
+The positive control of this experiment is "Ethanol" and the negative control is "no added substance".
 <br>
 <br>
 <br>
-to analyze this experiment I would follow these steps.       
-1. making a new column which shows which condition every worm is located in. (for example, group1 would consist of 2,6-diisopropylnaphthalene with a concentration of 4.99 nM, etc.)       
-2. checking normality for every condition.        
+To analyze this experiment I would follow these steps.       
+1. Making a new column which shows which condition every worm is located in. (for example, group1 would consist of 2,6-diisopropylnaphthalene with a concentration of 4.99 nM, etc.)       
+2. Checking normality for every condition.        
 <br>
 _NORMALLY DISTRIBUTED DATA:_        
-3. perform ANOVA. with post-hoc tests and check if they differ from the control.       
+3. Perform ANOVA. with post-hoc tests and check if they differ from the control.       
 _NOT NORMALLY DISTRIBUTED DATA:_        
-3. perform kruskal - wallis test.       
+3. Perform Kruskal - Wallis test.       
 <br>
-4. to visualize this difference, make a smoothed line graph for every the mean of every concentration per substance.        
-5. compare these graphs with each other.
+4. To visualize this difference, make a smoothed line graph for every the mean of every concentration per substance.        
+5. Compare these graphs with each other.        
+<br>        
+For now lets normalize the values by taking the average of the negative control and using that as 100%. That way its easier to see the difference between compounds.       
 
 
 ```{r making normalized values, warning=FALSE}
@@ -107,5 +109,3 @@ offspring_tidy %>%
   scale_colour_brewer(palette = "Dark2") +
   theme_classic()
 ```
-      
-  We normalize the data so we can see the difference between the different substances more easily.

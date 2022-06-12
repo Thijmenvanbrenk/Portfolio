@@ -12,8 +12,8 @@ To learn these skills i have made a small plan for a few steps i want to go thro
 1.    Find a suitable outbreak with available data.       
 2.    Process the data to get simple phylogenetic trees.        
 3.    Add regions to these trees.       
-4.    Put these trees over a geographical map to see location.        
-5.    Make these geopgraphicals maps interactive for easy visibility.       
+4.    Create a shiny to make it easy for others to create these graphs       
+5.    Give more paramaters, like showing only specific regions or adding different species. (optional depending on time)       
 <br>        
 
 ### Finding an outbreak
@@ -43,272 +43,12 @@ I will only be working with these 2 datafiles.
 ### Creating Phylogenetic trees
 
 For learning how to create these phylogenetic trees I have taken inspiration from a small tutorial on how to create Phylogenetic trees. You can find this tutorial [Here](https://fuzzyatelin.github.io/bioanth-stats/module-24/module-24.html).       
+After getting an idea of how to make these trees I have taken further inspiration from ggtree and all the help for that on google.
 
 
 
-```r
-# we need to load a few packages first
-#BiocManager::install("msa")
-library(msa)
-```
 
-```
-## Loading required package: Biostrings
-```
 
-```
-## Loading required package: BiocGenerics
-```
-
-```
-## 
-## Attaching package: 'BiocGenerics'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, sd, var, xtabs
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-##     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-##     union, unique, unsplit, which.max, which.min
-```
-
-```
-## Loading required package: S4Vectors
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## 
-## Attaching package: 'S4Vectors'
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     expand.grid, I, unname
-```
-
-```
-## Loading required package: IRanges
-```
-
-```
-## 
-## Attaching package: 'IRanges'
-```
-
-```
-## The following object is masked from 'package:grDevices':
-## 
-##     windows
-```
-
-```
-## Loading required package: XVector
-```
-
-```
-## Loading required package: GenomeInfoDb
-```
-
-```
-## 
-## Attaching package: 'Biostrings'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     strsplit
-```
-
-```r
-library(tidyverse)
-```
-
-```
-## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
-```
-
-```
-## v ggplot2 3.3.6     v purrr   0.3.4
-## v tibble  3.1.7     v dplyr   1.0.9
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
-```
-
-```
-## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::collapse()   masks Biostrings::collapse(), IRanges::collapse()
-## x dplyr::combine()    masks BiocGenerics::combine()
-## x purrr::compact()    masks XVector::compact()
-## x dplyr::desc()       masks IRanges::desc()
-## x tidyr::expand()     masks S4Vectors::expand()
-## x dplyr::filter()     masks stats::filter()
-## x dplyr::first()      masks S4Vectors::first()
-## x dplyr::lag()        masks stats::lag()
-## x ggplot2::Position() masks BiocGenerics::Position(), base::Position()
-## x purrr::reduce()     masks IRanges::reduce()
-## x dplyr::rename()     masks S4Vectors::rename()
-## x dplyr::slice()      masks XVector::slice(), IRanges::slice()
-```
-
-```r
-library(tidyr)
-library(here)
-```
-
-```
-## here() starts at C:/Users/tvanb/Documents/Data_analysis/DSFB2/Portfolio
-```
-
-```r
-library(adegenet)
-```
-
-```
-## Loading required package: ade4
-```
-
-```
-## 
-## Attaching package: 'ade4'
-```
-
-```
-## The following object is masked from 'package:Biostrings':
-## 
-##     score
-```
-
-```
-## The following object is masked from 'package:BiocGenerics':
-## 
-##     score
-```
-
-```
-## 
-##    /// adegenet 2.1.7 is loaded ////////////
-## 
-##    > overview: '?adegenet'
-##    > tutorials/doc/questions: 'adegenetWeb()' 
-##    > bug reports/feature requests: adegenetIssues()
-```
-
-```r
-library(ape)
-```
-
-```
-## 
-## Attaching package: 'ape'
-```
-
-```
-## The following object is masked from 'package:Biostrings':
-## 
-##     complement
-```
-
-```r
-#BiocManager::install("ggtree")
-library(ggtree)
-```
-
-```
-## Registered S3 method overwritten by 'ggtree':
-##   method      from 
-##   identify.gg ggfun
-```
-
-```
-## ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
-## 
-## If you use ggtree in published research, please cite the most appropriate paper(s):
-## 
-## 1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
-## 2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
-## 3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
-```
-
-```
-## 
-## Attaching package: 'ggtree'
-```
-
-```
-## The following object is masked from 'package:ape':
-## 
-##     rotate
-```
-
-```
-## The following object is masked from 'package:tidyr':
-## 
-##     expand
-```
-
-```
-## The following object is masked from 'package:Biostrings':
-## 
-##     collapse
-```
-
-```
-## The following object is masked from 'package:IRanges':
-## 
-##     collapse
-```
-
-```
-## The following object is masked from 'package:S4Vectors':
-## 
-##     expand
-```
-
-```r
-#BiocManager::install("treeio")
-library(treeio)
-```
-
-```
-## treeio v1.18.1  For help: https://yulab-smu.top/treedata-book/
-## 
-## If you use treeio in published research, please cite:
-## 
-## LG Wang, TTY Lam, S Xu, Z Dai, L Zhou, T Feng, P Guo, CW Dunn, BR Jones, T Bradley, H Zhu, Y Guan, Y Jiang, G Yu. treeio: an R package for phylogenetic tree input and output with richly annotated and associated data. Molecular Biology and Evolution 2020, 37(2):599-603. doi: 10.1093/molbev/msz240
-```
-
-```
-## 
-## Attaching package: 'treeio'
-```
-
-```
-## The following object is masked from 'package:ape':
-## 
-##     drop.tip
-```
-
-```
-## The following object is masked from 'package:Biostrings':
-## 
-##     mask
-```
 
 ```r
 # now we need to load in the nucleotides
@@ -335,7 +75,7 @@ dna
 ```r
 # and the metadata
 metadata <- read.csv(here("data/MERS_annotation.csv"))
-metadata %>% head(10) %>% knitr::kable()
+metadata %>% head(5) %>% knitr::kable()
 ```
 
 
@@ -347,11 +87,6 @@ metadata %>% head(10) %>% knitr::kable()
 |KM027263  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7058/KSA/2014 spike protein (S) gene, complete cds |
 |KM027264  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7209/KSA/2014 spike protein (S) gene, complete cds |
 |KM027265  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7311/KSA/2014 spike protein (S) gene, complete cds |
-|KM027266  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7312/KSA/2014 spike protein (S) gene, complete cds |
-|KM027267  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7319/KSA/2014 spike protein (S) gene, complete cds |
-|KM027268  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7554/KSA/2014 spike protein (S) gene, complete cds |
-|KM027269  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7720/KSA/2014 spike protein (S) gene, complete cds |
-|KM027270  |   4062|S             |Homo sapiens |Saudi Arabia |               |2014            |2014/11/12   |Middle East respiratory syndrome coronavirus isolate Jeddah_C7773/KSA/2014 spike protein (S) gene, complete cds |
 
 ```r
 # we only want the years from the metadata so lets extract those
@@ -375,7 +110,7 @@ nj_tree <- bionj(dna_distance)
 plot(nj_tree, cex = .4)
 ```
 
-<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ```r
 # this is the most simplistic phylogenetic tree to be made and just shows the relation between the different samples.
@@ -420,18 +155,16 @@ bootstrap <- boot.phylo(nj_rooted, dna_boots, function(e) {root(bionj(dist.dna(e
 ```
 
 ```r
-# because I am not really interested in the accession number of every sample i want to change it to the country name 
-
 # now we can add our bootstrap values
 plot(nj_rooted, cex = .4)
 axisPhylo()
 nodelabels(bootstrap, cex = .7)
 ```
 
-<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-2.png" width="672" />
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-2-2.png" width="672" />
 
 ```r
-    # now we can collapse some of our nodes
+    # now we can collapse some of our nodes that have too low values
     nj_collapsed <- nj_rooted
 
     # step 1: figure out the row numbers of the branches that can be collapsed
@@ -446,134 +179,250 @@ nodelabels(bootstrap, cex = .7)
     plot(nj_collapsed, cex = .45)
 ```
 
-<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-3.png" width="672" />
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-2-3.png" width="672" />
 
 ```r
 # lets add some nice colours to the plot so we can see the countries more easily
 
 nj_tree_withcolours <- ggtree(nj_collapsed) +
                           geom_treescale()
-```
-
-```
-## Warning: The tree contained negative edge lengths. If you want to ignore the edges,
-## you can set 'options(ignore.negative.edge=TRUE)', then re-run ggtree.
-```
-
-```r
+    
     metadata$country <- as.factor(metadata$country)
 
 
 nj_tree_withcolours <- nj_tree_withcolours %<+% metadata +
-  geom_tiplab(aes(color = country), size = 2)
-  geom_tippoint(aes(color = country), alpha = .25)
-```
+  geom_tiplab(aes(color = country), size = 2.5)
 
-```
-## mapping: node = ~node, subset = ~isTip, colour = ~country 
-## geom_point_g_gtree: na.rm = FALSE
-## stat_tree_label: na.rm = FALSE
-## position_identity
-```
-
-```r
 nj_tree_withcolours
 ```
 
-<img src="09-Epidemiology_files/figure-html/unnamed-chunk-1-4.png" width="672" />
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-2-4.png" width="672" />
 
+```r
+# we can even zoom in on some parts of the tree
 
+zoomed <- ggtree(tree_subset(nj_tree, "MK462258")) +
+  geom_treescale()
 
+zoomed %<+% metadata +
+  geom_tiplab(aes(color = country), size = 2.5)
+```
 
+<img src="09-Epidemiology_files/figure-html/unnamed-chunk-2-5.png" width="672" />
 
+### Making Phylogeny automated
+Now that I have created something i want to be able to show easily without all the hassle of recreating this code over and over again I will implement this into a shiny so its more user friendly.         
+Because hosting a shiny in bookdown is not possible without launching it as an app I will just include the code. The original file can be found at "data/phylo.shiny.Rmd".
 
 
 ```r
-library(adegenet)
-library(here)
-library(tidyverse)
-library(ggplot2)
-#BiocManager::install("ggtree")
-library(ggtree)
-
-
-
-
-dna2 <- fasta2DNAbin(here("data/MERS_nucleotides.fa"))
-
-dna2
-
-
-
-
-
-
-dna <- fasta2DNAbin(file = here("data/MERS_nucleotides.fa"))
-dna
-
-annot <- read.csv(here("data/MERS_annotation.csv"))
-
-library(ape)
-D <- dist.dna(dna, model = "TN93")
-length(D)
-
-temp <- as.data.frame(as.matrix(D))
-table.paint(temp, cleg=0, clabel.row=.5, clabel.col=.5)
-
-
-tre <- nj(D)
-class(tre)
-
-h_cluster <- hclust(D, method = "average", members = NULL) # method = average is used for UPGMA, members can be equal to NULL or a vector with a length of size D
-plot(h_cluster, cex = 0.6, show.tip = F)
-
-tre <- ladderize(tre)
-
-plot(tre, cex = 0.6)
-
-annot <- annot %>% separate(collection_date, into = c("collection_date"), sep = 4)
-annot$collection_date <- as.numeric(annot$collection_date)
-
-plot(tre, show.tip=FALSE, main = "Unrooted NJ tree") # gets rid of the labels on the end, refer to the first tree depicted above
-title("Unrooted NJ tree")
-myPal <- colorRampPalette(c("red","yellow","green","blue"))
-tiplabels(annot$collection_date, bg=num2col(annot$collection_date, col.pal=myPal), cex=.5) #we use the annot dataset to get our years
-temp <- pretty(2013:2019, 2)
-legend("bottomleft", fill=num2col(temp, col.pal=myPal), leg=temp, ncol=2)
-
-tre2 <- root(tre, out = 1)
-tre2 <- ladderize(tre2)
-
-x <- as.vector(D)
-y <- as.vector(as.dist(cophenetic(tre2)))
-plot(x, y, xlab="original pairwise distances", ylab="pairwise distances on the tree", main="Is NJ appropriate?", pch=20, col=transp("black",.1), cex=3)
-abline(lm(y~x), col="red")
-
-
-
-tre3 <- as.phylo(hclust(D,method="average"))
-y <- as.vector(as.dist(cophenetic(tre3)))
-plot(x, y, xlab="original pairwise distances", ylab="pairwise distances on the tree", main="Is UPGMA appropriate?", pch=20, col=transp("black",.1), cex=3)
-abline(lm(y~x), col="red")
-
-cor(x, y)^2
-
-
-
-
-
-myBoots <- boot.phylo(tre2, dna, function(e) root(nj(dist.dna(e, model = "TN93")),1))
-
-myBoots
-
-
-plot(tre2, show.tip=FALSE, edge.width=2)
-title("NJ tree + bootstrap values")
-tiplabels(frame="none", pch=20, col=transp(num2col(annot$collection_date, col.pal=myPal),.7), cex=3, fg="transparent")
-
-axisPhylo()
-temp <- pretty(2013:2019, 5)
-legend("topright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2)
-nodelabels(myBoots, cex=.6)
+ui <- fluidPage(
+  
+  # makes you choose your own theme (I like themes (: )
+  shinythemes::themeSelector(),
+  
+  titlePanel("Create your own phylogenetic tree"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      
+      h4("Input files"),
+      
+      fileInput(inputId = "fasta_file",
+                label = "Select a fasta file",
+                accept = ".fa"),
+      
+      fileInput(inputId = "metadata",
+                label = "Select the metadata",
+                accept = ".csv"),
+      
+      actionButton(inputId = "go",
+                   label = "Start analysis/Reset graph"),
+      
+      h4("Retrieval settings"),
+      
+      textInput(inputId = "accession",
+                label = "Insert the accession number"),
+      
+      actionButton(inputId = "zoom",
+                   label = "Zoom in on clade"),
+      
+      h4("Visualization"),
+      
+      selectInput(inputId = "colour",
+                  label = "Which factor should be distinguished on",
+                  choices = c("country", "host", "isolation", "collection_date"),
+                  selected = "country"),
+      
+      width = 3
+    
+    ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("How to download the required files",
+                 tags$div(
+                   tags$h4("Requirements"),
+                   "This shiny requires very specific data files, so to make sure there isnt any confusion I made a list of what these files need:",
+                   tags$br(),
+                   "1. All sequences have to be the same length.",
+                   tags$br(),
+                   "2. Metadata must contain \"accession\", \"host\", \"country\", \"isolation\" and \"collection_date\".",
+                   tags$br(), tags$br(),
+                   tags$h4("Downloading files"),
+                   "1. Go to the site of ",
+                   tags$a(href="https://www.ncbi.nlm.nih.gov/genome/viruses/variation/", "the NCBI."),
+                   tags$br(),
+                   "2. Go to the virus databank you want to make the tree of.",
+                   tags$br(),
+                   "3. Select nucleotide sequence type.",
+                   tags$br(),
+                   "4. Select your filters. (tip: select a region that has the full cds)",
+                   tags$br(),
+                   "5. Click \"Add query\" and \"Show results\".",
+                   tags$br(),
+                   "6. Make sure you only select the same region with the same length!!",
+                   tags$br(),
+                   "7.  Click \"Customize label\", make sure the label only contains \"{accession}\". (this makes it easier to see later on) ",
+                   tags$br(),
+                   "8. Download the \"Nucleotide (fasta)\" and \"Result set (CSV)\" options.",
+                   tags$br(),
+                   "9. Input these two files in this shiny and go to the next tab.",
+                   tags$br(),tags$br(),
+                   tags$h4("Extra information"),
+                   "Creating a phylogeny tree is not easy and requires allot of factors for it to go right, thats why this shiny only has the basics. Later on I am planning on adding \"Multiple Sequence Alignment\", but I do not have time for that at this moment.",
+                   tags$br(),
+                   "If there are any questions feel free to contact me through",
+                   tags$a(href="https://github.com/thijmenvanbrenk", "my github"
+                   ))),
+        
+        tabPanel("Phylogenetic tree",
+                 tableOutput("meta"),
+                 plotOutput("phylo"))
+        
+        
+      
+          ),
+        
+        
+          width = 9)
+    
+  )
+)
 ```
+
+This is what the ui looks like.
+![](data/UI_example.png)
+
+
+```r
+server <- function(input, output, session) {
+  
+  # inputting the fasta file
+  
+  nucleotides <- reactive({
+  
+    req(input$fasta_file)
+    
+    readDNAStringSet(input$fasta_file$datapath)
+  
+  })
+  # inputting the metadata file
+  
+  metadata <- reactive({
+    
+    req(input$metadata)
+    
+    read.csv(input$metadata$datapath)
+  })
+  # extracting just the years from metadata
+  
+  metadata_year_temp <- reactive({
+    
+    metadata() %>% separate(collection_date, into = "collection_date", sep = 4)
+  })
+  # making inputted tree
+  
+  nj_tree <- reactive({
+    
+    as.DNAbin(nucleotides()) %>%
+      dist.dna(model = "TN93") %>%
+      bionj()
+  })
+
+  # time to make the graph
+  
+  # first create te full graph
+  tree_foundation <- reactive({
+    
+    ggtree(nj_tree()) +
+      geom_treescale()
+  
+    })
+  
+  tree_full <- reactive({
+    
+    tree_foundation() %<+% metadata_year_temp() +
+       geom_tiplab(aes_string(color = input$colour), size = 3)
+  })
+  
+  # then the zoomed in graph
+  tree_zoomed <- reactive({
+   ggtree(tree_subset(nj_tree(), input$accession)) +
+  geom_treescale()
+  })
+  
+  tree_zoomed_full <- reactive({
+    
+    tree_zoomed() %<+% metadata_year_temp() +
+  geom_tiplab(aes_string(color = input$colour), size = 3)
+  })
+  
+  # now tell shiny which to show when
+  
+  tree_output <- reactiveValues(plot=NULL)
+  
+  observeEvent(input$go, {
+  
+    tree_output$plot <- tree_full()
+  })
+  
+  observeEvent(input$zoom, {
+    
+    tree_output$plot <- tree_zoomed_full()
+  })
+  
+  # now we can output the plot
+  output$phylo <- renderPlot({
+  
+    if(is.null(tree_output$plot)) {
+      
+    } else {
+    tree_output$plot
+    }
+    })
+  
+  # show the information about the selected accession code
+  output$meta <- renderTable({
+    
+    output_table <- metadata_year_temp() %>% 
+      filter(metadata_year_temp()$accession == input$accession)
+    
+    if(nrow(output_table) == 0) {
+      validate("This accession number does not exist")
+    } else {
+      output_table
+    }
+    
+  })
+  
+}
+
+shinyApp(ui, server, options = list(height=650, width = 1300))
+```
+
+And these are pictures of the server in action, it can create graphs like these.
+![](data/server_example1.png)
+![](data/server_example2.png)
+![](data/server_example3.png)
 
