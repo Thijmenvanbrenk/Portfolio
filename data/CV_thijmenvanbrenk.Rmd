@@ -25,7 +25,7 @@ Extra Informatie {#skills}
 - <i class="fa fa-envelope"></i> tvanbrenk@outlook.com
 - <i class="fa fa-github"></i> [github.com/thijmenvanbrenk](https://github.com/thijmenvanbrenk)
 - <i class="fa fa-phone"></i> 06 387-349-75
-- <i class="fa fa-car"></i> Rijbewijs B
+- <i class="fa fa-car"></i> Rijbewijs BE
 - <i class="fa fa-flag"></i> Nederlands
 - Voor meer informatie ben ik bereikbaar via mijn email
 
@@ -117,6 +117,7 @@ heden - 2019
 - *Specialisatiekeuze:* Microbiologie
 - *Minor:* Data science for biology 1-2
 - *Projecten:*            
+&nbsp;&nbsp;&nbsp;&nbsp;- Host associated genes for *Campylobacter jejuni* and *Campylobacter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; coli*  
 &nbsp;&nbsp;&nbsp;&nbsp;- Determinatie en biofilm assay van bacteriën bij Quaker Houghton           
 &nbsp;&nbsp;&nbsp;&nbsp;- PCR validatie voor *Porphyromonas gingivalis*
 
@@ -132,9 +133,10 @@ Veenendaal, NL
 Werkervaring {data-icon=suitcase}
 --------------------------------------------------------------------------------
 
+
 ### Administratief medewerker
 
-Ziekenhuis Gelderse Vallei
+Dicoon (voorheen onderdeel van Ziekenhuis Gelderse Vallei)
 
 Ede, NL
 
@@ -158,18 +160,6 @@ Ochten, NL
 - Kuikens enten
 :::
 
-### Vakkenvuller
-
-Albert Heijn
-
-Opheusden, NL
-
-2019 - 2017
-
-:::concise
-- Vakkenvullen
-- Klanten assisteren
-:::
 
 Cursussen
 --------------------------------------------------------------------------------
