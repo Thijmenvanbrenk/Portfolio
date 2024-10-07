@@ -43,7 +43,7 @@ Competenties {#skills}
 - Hardwerkend
 - Zelfstandig
 - Doorzettingsvermogen
-- Loyaal
+- Zonnetje in huis
 
 <br/>           
 <br/>
@@ -86,7 +86,7 @@ table {   border-collapse: separate;   border-spacing: 15px 0;  }
   </tr> 
   <tr> 
     <td>  </td> 
-    <td> 4043KB Opheusden </td> 
+    <td> 4043 KB Opheusden </td> 
   </tr> 
     <tr> 
     <td> Geboortedatum: </td> 
@@ -117,7 +117,7 @@ heden - 2019
 - *Specialisatiekeuze:* Microbiologie
 - *Minor:* Data science for biology 1-2
 - *Projecten:*            
-&nbsp;&nbsp;&nbsp;&nbsp;- Host associated genes for *Campylobacter jejuni* and *Campylobacter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; coli*  
+&nbsp;&nbsp;&nbsp;&nbsp;- Identification of host associated genes for *Campylobacter jejuni* and &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *Campylobacter coli*  
 &nbsp;&nbsp;&nbsp;&nbsp;- Determinatie en biofilm assay van bacteriën bij Quaker Houghton           
 &nbsp;&nbsp;&nbsp;&nbsp;- PCR validatie voor *Porphyromonas gingivalis*
 
@@ -134,17 +134,18 @@ Werkervaring {data-icon=suitcase}
 --------------------------------------------------------------------------------
 
 
-### Administratief medewerker
+### Analist Medische Microbiologie
 
-Dicoon (voorheen onderdeel van Ziekenhuis Gelderse Vallei)
+Dicoon (voorheen onderdeel van Ziekenhuis Gelderse Vallei in Ede)
 
-Ede, NL
+Elst, NL
 
 Heden - 2021
 
-- Patiëntmaterialen inboeken met behulp van XCARE en GLIMS
-- Patiëntmaterialen inzetten 
-- Labmaterialen bijvullen en HAP-pakketten maken
+- Serologische en immunologische bepalingen uitvoeren met behulp van verschillende technieken
+- Determineren van bacteriën uit verschillende lichaamsmaterialen en de antibioticaresistentie hiervan
+- Resultaten verwerken met behulp van GLIMS8 en 10
+- Onderhoud van meerdere apparaten voor sneldiagnostiek uitvoeren en collega's hier op inwerken
 
 ### Medewerker kuikenbroederij
 
@@ -170,15 +171,4 @@ Imkers Oost-Betuwe
 
 Bemmel, NL
 
-heden - 2019
-
-
-### Bijenhouden voor beginners
-
-Imkers Oost-Betuwe
-
-Bemmel, NL
-
-2019 - 2018
-
-
+2022 - 2019
